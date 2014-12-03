@@ -19,6 +19,8 @@ assign  RTdata_o = register[RTaddr_i];
 
 // Write Data   
 always@(posedge clk_i) begin
+    RSdata_o <= register[RSaddr_i];
+    RTdata_o <= register[RTaddr_i];
     if(RegWrite_i)
         register[RDaddr_i] <= RDdata_i;
 end

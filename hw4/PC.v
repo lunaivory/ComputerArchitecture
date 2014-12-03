@@ -1,10 +1,10 @@
 module PC
 (
-    input           clk_i,
-    input           rst_i,
-    input           start_i,
-    input   [31:0]  pc_i,
-    output reg [31:0]  pc_o
+    input               clk_i,
+    input               rst_i,
+    input               start_i,
+    input       [31:0]  pc_i,
+    output reg  [31:0]  pc_o
 );
 
 
