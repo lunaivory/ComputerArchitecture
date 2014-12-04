@@ -18,7 +18,8 @@ PC PC(
     .clk_i      (clk_i),
     .rst_i      (rst_i),
     .start_i    (start_i),
-    .pc_i       (Add_PC.data_o)//,
+    .pc_i       (Add_PC.data_o),
+    .stall_i   ()//,
     //.pc_o       (Add_PC.data1_in)
 );
 
@@ -44,8 +45,9 @@ MUX32 Jump_MUX(
 IF_ID IF_ID(
     .clk_i      (clk_i),
     .addedPC_i  (),
-    .IFinst_i   (),
+    .IF_Hazard_i   (),
     .flush_i    (),
+    .brench_i    (),
     .addedPC_o  (),
     .inst_o   ()
 );
@@ -58,11 +60,11 @@ Shift_Left2_Concat JumpAddr(
 
 Hazard_Detection_Unit HD(
     .inst_i(),
-    .ID_EX_i(),
-    .ID_EX_M_i(),
-    .PC_o(),
-    .control_o(),
-    .flush_o()
+    .IDEX_RT_addr_i(),
+    .IDEX_MemRead_i(),
+    .PCWrite_o(),
+    .IFID_Write_o(),
+    .stall_o()
 );
 
 FLUSH_MUX Flush_MUX(
@@ -125,21 +127,23 @@ ID_EX ID_EX(
     .EX_i       (),
     .Reg_data1_i(),
     .Reg_data2_i(),
-    .inst2521_i (), //RegRs
-    .inst2016_i (), //RegRt
-    .inst2016_i (), //RegRt
-    .inst1511_i (), //RegRd
+    .RsAddr_FW_i (), //RegRs
+    .RtAddr_FW_i (), //RegRt
+    .RtAddr_WB_i (), //RegRt
+    .RdAddr_WB_i (), //RegRd
     .immd_i     (),
     .WB_o       (),
     .M_o        (),
     .Reg_data1_o(),
     .Reg_data2_o(),
     .immd_o(),
-    .inst2521_o (), //RegRs
-    .inst2016_o (), //RegRt
-    .inst2016_o (), //RegRt
-    .inst1511_o () //RegRd
-
+    .ALU_Src_o(),
+    .ALU_OP_o(),
+    .Reg_Dst_o(),
+    .RsAddr_FW_o (), //RegRs[25:21]
+    .RtAddr_FW_o (), //RegRt[20:16]
+    .RtAddr_WB_o (), //RegRt[20:16]
+    .RdAddr_WB_o () //RegRd[15:11]
 )
 
 ForwardMUX MUX6( //mux6, 7
@@ -186,13 +190,13 @@ ALU_Control ALU_Control(
     //.ALUCtrl_o  (ALU.ALUCtrl_i)
 );
 
-ForwardUnit ForwardUnit(
-    .EX_MEM_WB_i    (),
-    .MEM_WB_WB_i    (),
-    .EX_MEM_inst_i  (),
-    .MEM_WB_inst_i  (),
-    .inst2521_i (), //RegRs
-    .inst2016_i (), //RegRt
+Forward_Unit Forward_Unit(
+    .EXMEM_WB_i    (),
+    .MEMWB_WB_i    (),
+    .IDEX_RsAddr_i  (),
+    .IDEX_RtAddr_i  (),
+    .EXMEM_WriteAddr_i (),
+    .MEMWB_WriteAddr_i (),
     .mux6_o     (),
     .mux7_o     (),
 )
@@ -208,10 +212,11 @@ EX_MEM EX_MEM(
     .mux7_o     (),
     .muxRegDst_o    (),
     .WB_o       (),
-    .M_o        ()
+    .MemWrite_o (),
+    .MemRead_o ()
 );
 
-Data_Memory DataMemory(
+Data_Memory Data_Memory(
     .clk_i      (clk_i),
     .addr_i     (),
     .write_data_i   (),
@@ -219,17 +224,17 @@ Data_Memory DataMemory(
     .MemWrite_i (),
     .data_o     ()
 );
-
 MEM_WB MEM_WB(
     .clk_i      (clk_i),
     .WB_i       (),
     .MEM_data_i (),
-    .MEM_addr_i (), //from EX_MEM.ALUout_o
+    .ALU_data_i (), //from EX_MEM.ALUout_o
     .RegDst_i  (),
-    .MEM_addr_o     (), //to mux5
-    .RegDst_o   (),
-    .Data_o     (), //to mux5
-    .MEM_WB_o   ()
+    .RegWrite_o(),
+    .MemToReg_o     (), //to mux5
+    .Mem_data_o  (),
+    .ALU_data_o    (), //to mux5
+    .RegWriteAddr_o  ()
 );
 
 MUX32 MemToReg(
