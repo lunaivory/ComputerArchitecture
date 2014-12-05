@@ -45,7 +45,7 @@ end
 always @(negedge clk_i) begin
 	ALU_Src_o <= EX[3];
 	ALU_OP_o <= EX[2:1];
-	ALU_OP_o <= EX[0];
+	Reg_Dst_o <= EX[0];
 
 	Reg_data1_o <= Reg_data1;
 	Reg_data2_o <= Reg_data2;
