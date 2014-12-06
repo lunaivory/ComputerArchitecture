@@ -26,7 +26,7 @@ always @(Op_i)begin
     end
     else if(Op_i == 6'b001000) begin //I type
         ALUSrc    <= 1'b1;
-        ALUOp     <= 2'b10; // need check
+        ALUOp     <= 2'b00; // addi only
         RegDst    <= 1'b0;
 
 		MemWrite  <= 1'b0;
