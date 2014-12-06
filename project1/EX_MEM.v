@@ -19,7 +19,7 @@ reg [1:0] WB, MEM;
 
 always @(posedge clk_i) begin
 	ALUout <= ALUout_i;
-	MemwriteData <= MemwriteData_i;
+	MemWriteData <= MemWriteData_i;
 	RegWriteAddr <= RegWriteAddr_i;
 	WB <= WB_i;
 	MEM <= MEM_i;
@@ -27,7 +27,7 @@ end
 
 always @(negedge clk_i) begin
 	ALUout_o <= ALUout;
-	MemwriteData_o <= MemwriteData;
+	MemWriteData_o <= MemWriteData;
 	RegWriteAddr_o <= RegWriteAddr;
 	WB_o <= WB;
 	MemWrite_o <= MEM_i[1];

@@ -4,8 +4,8 @@ module Equal(
   output reg   data_o
 );
 
-always @(data1_i or data2_i)
-	data_o = (data1_i == data2_i)
+always @(data1_i or data2_i) begin
+  data_o <= (data1_i == data2_i);
 end
 
 endmodule
