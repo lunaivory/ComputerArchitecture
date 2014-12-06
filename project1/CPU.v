@@ -19,7 +19,7 @@ PC PC(
     .rst_i      (rst_i),
     .start_i    (start_i),
     .pc_i       (Jump_MUX.data_o),
-    .stall_i    (HD.stall_o)//,
+    .stall_i    (HD.pc_stall_o)//,
     //.pc_o       ()
 );
 
@@ -51,7 +51,7 @@ MUX32 Jump_MUX(
 IF_ID IF_ID(
     .clk_i          (clk_i),
     .addedPC_i      (Add_PC.data_o),
-    .IF_Hazard_i    (HD.IFID_Write_o),
+    .IF_Hazard_i    (HD.IFID_stall_o),
     .inst_i         (instruction),
     .flush_i        (Control.jumpCtrl_o),
     .brench_i       (Brench_AND.data_o)//,
@@ -66,19 +66,21 @@ Shift_Left2_Concat JumpAddr(
 );
 
 Hazard_Detection_Unit HD(
-    .inst_i         (instruction),
-    .IDEX_RT_addr_i (ID_EX.RtAddr_WB_o),
+    .Op_i           (instruction[31:26]),
+    .IFID_RsAddr_i  (instruction[25:21]),
+    .IFID_RtAddr_i  (instruction[20:16]),
+    .IDEX_RtAddr_i  (ID_EX.RtAddr_WB_o),
     .IDEX_MemRead_i (ID_EX.MEM_o[0])//,
-    //.PCWrite_o      (),
-    //.IFID_o   (),
-    //.stall_o        ()
+    //.PC_stall_o      (),
+    //.IFID_stall_o   (),
+    //.IDEX_stall_o        ()
 );
 
 Flush_MUX Flush_MUX(
     .WB_i           (Control.WB_o),
     .EX_i           (Control.EX_o),
     .MEM_i          (Control.MEM_o),
-    .flush_i        (HD.stall_o)//,
+    .flush_i        (HD.IDEX_stall_o)//,
     //.WB_o           (),
     //.EX_o           (),
     //.MEM_o          ()
