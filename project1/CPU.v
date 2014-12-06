@@ -10,7 +10,7 @@ wire    [31:0]  instruction;//,instruct_addr;
 Adder Add_PC(
     .data1_in   (PC.pc_o),
     .data2_in   (32'd4)//,
-    //.data_o     (PC.pc_i)
+    //.data_o     ()
 );
 
 
@@ -18,9 +18,9 @@ PC PC(
     .clk_i      (clk_i),
     .rst_i      (rst_i),
     .start_i    (start_i),
-    .pc_i       (Add_PC.data_o),
-    .stall_i   ()//,
-    //.pc_o       (Add_PC.data1_in)
+    .pc_i       (Jump_MUX.data_o),
+    .stall_i    (HD.stall_o)//,
+    //.pc_o       ()
 );
 
 Instruction_Memory Instruction_Memory(
@@ -52,6 +52,7 @@ IF_ID IF_ID(
     .clk_i          (clk_i),
     .addedPC_i      (Add_PC.data_o),
     .IF_Hazard_i    (HD.IFID_Write_o),
+    .inst_i         (instruction),
     .flush_i        (Control.jumpCtrl_o),
     .brench_i       (Brench_AND.data_o)//,
    // .addedPC_o      (),
@@ -69,7 +70,7 @@ Hazard_Detection_Unit HD(
     .IDEX_RT_addr_i (ID_EX.RtAddr_WB_o),
     .IDEX_MemRead_i (ID_EX.MEM_o[0])//,
     //.PCWrite_o      (),
-    //.IFID_Write_o   (),
+    //.IFID_o   (),
     //.stall_o        ()
 );
 
