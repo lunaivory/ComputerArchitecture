@@ -23,11 +23,11 @@ always @(posedge clk_i) begin
 end
 
 always @(negedge clk_i) begin
-	RegWrite = WB[1];
-	MemToReg = WB[0];
-	MEM_data_o = MEM_data;
+	RegWrite_o = WB[1];
+	MemToReg_o = WB[0];
+	Mem_data_o = MEM_data;
 	ALU_data_o = ALU_data;
-	RegWriteAddr = RegWriteAddr_i;
+	RegWriteAddr_o = RegWriteAddr;
 end
 
 endmodule
