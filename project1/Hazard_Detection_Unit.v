@@ -15,25 +15,25 @@ always @(*) begin
     if (Op_i == 6'b001000 and IFID_RsAddr_i == IDEX_RtAddr_i) begin 
       PC_stall_o <= 1'b1;
       IFID_stall_o <= 1'b1;
-      IDEX_stall_o <= 1'b1;
+      IDEX_stall_o <= 1'b0;
     end
   //beq or Rtype
     else if ((Op_i == 6'b000100 or Op_i == 6'b000000)and 
             (IFID_RsAddr_i == IDEX_RtAddr_i or IFID_RtAddr_i == IDEX_RtAddr_i)) begin
       PC_stall_o <= 1'b1;
       IFID_stall_o <= 1'b1;
-      IDEX_stall_o <= 1'b1;
+      IDEX_stall_o <= 1'b0;
     end
     else begin
       PC_stall_o <= 1'b0;
       IFID_stall_o <= 1'b0;
-      IDEX_stall_o <= 1'b0;
+      IDEX_stall_o <= 1'b1;
     end
   end
   else begin
       PC_stall_o <= 1'b0;
       IFID_stall_o <= 1'b0;
-      IDEX_stall_o <= 1'b0;
+      IDEX_stall_o <= 1'b1;
   end
 end
 endmodule
