@@ -34,14 +34,14 @@ AND Brench_AND(
     //.data_o     ()
 );
 
-MUX32 Brench_MUX(
+MUX32 Brench_MUX( //MUX1
     .data1_i    (Add_Jump.data_o),
     .data2_i    (Add_PC.data_o),
     .select_i   (Brench_AND.data_o)//,
     //.data_o     ()
 );
 
-MUX32 Jump_MUX(
+MUX32 Jump_MUX( //MUX2
     .data1_i    (JumpAddr.jumpAddr_o),
     .data2_i    (Brench_MUX.data_o),
     .select_i   (Control.jumpCtrl_o)//,

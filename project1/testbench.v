@@ -63,7 +63,7 @@ always@(posedge Clk) begin
         $finish;
   
     if(CPU.HD.IDEX_stall_o == 1 && CPU.Control.jumpCtrl_o == 0 && CPU.Control.brenchCtrl_o == 0)stall = stall + 1;
-    if(CPU.HD.IFID_stall_o == 1)flush = flush + 1;  
+    if(CPU.Brench_AND.data_o || CPU.Control.jumpCtrl_o)flush = flush + 1;  
     // print PC
     $fdisplay(outfile, "cycle = %d, Start = %d, Stall = %d, Flush = %d\nPC = %d", counter, Start, stall, flush, CPU.PC.pc_o);
     

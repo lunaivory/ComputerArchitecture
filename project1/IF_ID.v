@@ -31,7 +31,7 @@ always @(posedge clk_i) begin
 end
 
 always @(negedge clk_i) begin
-  if(Hazard_stall_i == 1'b0 || (brench_i || jump_i) == 1'b0) begin
+  if(Hazard_stall_i == 1'b1 || (brench_i || jump_i) == 1'b1) begin
     addedPC_o <= 32'd0;
     inst_o <= 32'd0;
   end
