@@ -153,7 +153,7 @@ ID_EX ID_EX(
     //.RtAddr_FW_o    (), //RegRt[20:16]
     //.RtAddr_WB_o    (), //RegRt[20:16]
     //.RdAddr_WB_o    () //RegRd[15:11]
-)
+);
 
 ForwardMUX MUX6( //mux6, 7
     .data0_i    (Registers.Reg_data1_o),
@@ -208,7 +208,7 @@ Forward_Unit Forward_Unit(
     .MEMWB_WriteAddr_i  (MEM_WB.RegWriteAddr_o)//,
     //.mux6_o             (),
     //.mux7_o             (),
-)
+);
 
 EX_MEM EX_MEM(
     .clk_i          (clk_i),
