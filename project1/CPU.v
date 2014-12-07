@@ -8,8 +8,8 @@ module CPU
 wire    [31:0]  instruction;//,instruct_addr;
 
 Adder Add_PC(
-    .data1_in   (PC.pc_o),
-    .data2_in   (32'd4)//,
+    .data1_i   (PC.pc_o),
+    .data2_i   (32'd4)//,
     //.data_o     ()
 );
 
@@ -19,7 +19,7 @@ PC PC(
     .rst_i      (rst_i),
     .start_i    (start_i),
     .pc_i       (Jump_MUX.data_o),
-    .stall_i    (HD.pc_stall_o)//,
+    .stall_i    (HD.PC_stall_o)//,
     //.pc_o       ()
 );
 
@@ -116,7 +116,7 @@ Registers Registers(
     .clk_i      (clk_i),
     .RSaddr_i   (instruction[25:21]),
     .RTaddr_i   (instruction[20:16]),
-    .RDaddr_i   (WB.RegWriteAddr_o), 
+    .RDaddr_i   (MEM_WB.RegWriteAddr_o), 
     .RDdata_i   (DataToReg.data_o),
     .RegWrite_i (MEM_WB.RegWrite_o)//, 
     //.RSdata_o   (), 
@@ -125,7 +125,7 @@ Registers Registers(
 
 Equal Equal(
     .data1_i    (Registers.RSdata_o),
-    .data2_i    (REgisters.RTdata_o)//,
+    .data2_i    (Registers.RTdata_o)//,
     //.data_o     ()
 );
 
@@ -156,7 +156,7 @@ ID_EX ID_EX(
 );
 
 ForwardMUX MUX6( //mux6, 7
-    .data0_i    (Registers.Reg_data1_o),
+    .data0_i    (Registers.RSdata_o),
     .data1_i    (DataToReg.data_o),
     .data2_i    (EX_MEM.ALUout_o),
     .select_i   (Forward_Unit.mux6_o)//,
@@ -164,7 +164,7 @@ ForwardMUX MUX6( //mux6, 7
 );
 
 ForwardMUX MUX7( //mux6, 7
-    .data0_i    (Registers.Reg_data2_o),
+    .data0_i    (Registers.RTdata_o),
     .data1_i    (DataToReg.data_o),
     .data2_i    (EX_MEM.ALUout_o),
     .select_i   (Forward_Unit.mux7_o)//,
@@ -195,7 +195,7 @@ ALU ALU(
 
 ALU_Control ALU_Control(
     .funct_i    (instruction[5:0]),
-    .ALUOp_i    (Control.ALUOp_o[1:0])//,
+    .ALUOp_i    (Control.EX_o[1:0])//,
     //.ALUCtrl_o  ()
 );
 
@@ -248,7 +248,7 @@ MEM_WB MEM_WB(
 
 MUX32 DataToReg(
     .data1_i    (Data_Memory.data_o),
-    .data2_i    (MEM_WB.ALUout_o),
+    .data2_i    (MEM_WB.ALU_data_o),
     .select_i   (MEM_WB.MemToReg_o)//,
     //.data_o     ()
 );
