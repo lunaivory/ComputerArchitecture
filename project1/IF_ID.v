@@ -20,6 +20,11 @@ module IF_ID(
 reg [31:0] addedPC;
 reg [31:0] inst;
 
+initial begin
+  addedPC <= 0;
+  inst <= 0;
+end
+
 always @(posedge clk_i) begin
   addedPC <= addedPC_i;
   inst <= inst_i;

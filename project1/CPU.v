@@ -1,7 +1,7 @@
 module CPU
 (
     input   clk_i, 
-    input   rst_i,
+    //input   rst_i,
     input   start_i
 );
 
@@ -16,7 +16,7 @@ Adder Add_PC(
 
 PC PC(
     .clk_i      (clk_i),
-    .rst_i      (rst_i),
+    //.rst_i      (rst_i),
     .start_i    (start_i),
     .pc_i       (Jump_MUX.data_o),
     .stall_i    (HD.PC_stall_o)//,
@@ -30,7 +30,7 @@ Instruction_Memory Instruction_Memory(
 
 AND Brench_AND(
     .data1_i    (Equal.data_o),
-    .data2_i    (Control.branchCtrl_o)//,
+    .data2_i    (Control.brenchCtrl_o)//,
     //.data_o     ()
 );
 
@@ -42,8 +42,8 @@ MUX32 Brench_MUX(
 );
 
 MUX32 Jump_MUX(
-    .data1_i    (Brench_MUX.data_o),
-    .data2_i    (JumpAddr.jumpAddr_o),
+    .data1_i    (JumpAddr.jumpAddr_o),
+    .data2_i    (Brench_MUX.data_o),
     .select_i   (Control.jumpCtrl_o)//,
     //.data_o     ()
 );
@@ -90,19 +90,19 @@ Control Control(
     .Op_i       (instruction[31:26])//,
     //.MUX8_o         (),
     //.jumpCtrl_o     (),
-    //.branchCtrl_o   (),
+    //.brenchCtrl_o   (),
     //.WB_o           (),
     //.EX_o           (),
     //.MEM_o          ()
 );
 
 Adder Add_Jump(
-    .data1_i    (branchx4.data_o),
+    .data1_i    (brenchx4.data_o),
     .data2_i    (IF_ID.addedPC_o)//,
     //.data_o     ()
 );
 
-Shift_Left2 branchx4(
+Shift_Left2 brenchx4(
     .data_i     (Signed_Extend.data_o)//,
     //.data_o     ()
 );

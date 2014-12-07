@@ -37,6 +37,10 @@ module Forward_Unit(
 	and (EXMEM_WriteAddr_i == IDEX_RtAddr_i))begin
 		mux7_o <= 2'b10;
 	end*/
+initial begin
+  mux6_o <= 2'b00;
+  mux7_o <= 2'b00;
+end
 
 always @(*) begin
 	mux6_o <= 2'b00;

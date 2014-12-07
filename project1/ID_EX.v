@@ -30,6 +30,14 @@ reg [4:0] RsAddr_FW, RtAddr_FW, RtAddr_WB, RdAddr_WB;
 reg [3:0] EX;
 reg [1:0] WB, MEM;
 
+initial begin
+  ALUout = 0;
+  MemWriteData = 0;
+  EX = 0;
+  WB = 0;
+  MEM = 0;
+end
+
 always @(posedge clk_i) begin
 	Reg_data1 <= Reg_data1_i;
 	Reg_data2 <= Reg_data2_i;

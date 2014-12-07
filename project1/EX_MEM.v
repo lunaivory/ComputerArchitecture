@@ -16,7 +16,10 @@ module EX_MEM(
 reg [31:0] ALUout, MemWriteData;
 reg [4:0] RegWriteAddr;
 reg [1:0] WB, MEM;
-
+initial begin
+    WB = 0;
+    MEM = 0;
+end
 always @(posedge clk_i) begin
 	ALUout <= ALUout_i;
 	MemWriteData <= MemWriteData_i;

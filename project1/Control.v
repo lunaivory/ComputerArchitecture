@@ -3,7 +3,7 @@ module Control(
     input      [5:0]  Op_i,
     output reg        FlushMUX_o  ,
     output reg        jumpCtrl_o  ,
-    output reg        branchCtrl_o,
+    output reg        brenchCtrl_o,
     output reg [1:0]  WB_o        ,//RegWrite MemToReg
     output reg [3:0]  EX_o        ,//ALUSrc ALUOp RegDst
     output reg [1:0]  MEM_o       //MemWrite MemRead
@@ -11,6 +11,9 @@ module Control(
 
 reg ALUSrc, RegDst, MemWrite, MemRead, RegWrite, MemtoReg;
 reg [2:0] ALUOp;
+initial begin
+    
+end
 
 always @(Op_i)begin
     if(Op_i == 6'b000000) begin //Rtype
@@ -23,6 +26,9 @@ always @(Op_i)begin
 
         RegWrite  <= 1'b1;
         MemtoReg  <= 1'b0;
+
+        jumpCtrl_o <= 1'b0;
+        brenchCtrl_o <= 1'b0;
     end
     else if(Op_i == 6'b001000) begin //I type
         ALUSrc    <= 1'b1;
@@ -34,6 +40,9 @@ always @(Op_i)begin
 
         RegWrite  <= 1'b1;
         MemtoReg  <= 1'b0;
+
+        jumpCtrl_o <= 1'b0;
+        brenchCtrl_o <= 1'b0;
     end
     else if(Op_i == 6'b100011) begin //lw
         ALUSrc    <= 1'b1;
@@ -45,6 +54,9 @@ always @(Op_i)begin
 
         RegWrite  <= 1'b1;
         MemtoReg  <= 1'b1;
+
+        jumpCtrl_o <= 1'b0;
+        brenchCtrl_o <= 1'b0;
     end
     else if(Op_i == 6'b101011) begin //sw
         ALUSrc    <= 1'b1;
@@ -56,6 +68,9 @@ always @(Op_i)begin
 
         RegWrite  <= 1'b0;
         MemtoReg  <= 1'b0;
+
+        jumpCtrl_o <= 1'b0;
+        brenchCtrl_o <= 1'b0;
     end
     else if(Op_i == 6'b000100) begin //beq
         ALUSrc    <= 1'b0; //don't care?
@@ -67,6 +82,9 @@ always @(Op_i)begin
 
         RegWrite  <= 1'b0;
         MemtoReg  <= 1'b0;
+
+        jumpCtrl_o <= 1'b0;
+        brenchCtrl_o <= 1'b1;
     end
     else if(Op_i == 6'b000010) begin //j
         ALUSrc    <= 1'b0;
@@ -78,6 +96,9 @@ always @(Op_i)begin
 
         RegWrite  <= 1'b0;
         MemtoReg  <= 1'b0;
+
+        jumpCtrl_o <= 1'b1;
+        brenchCtrl_o <= 1'b0;
     end
 
 	EX_o  = (ALUSrc << 3) + (ALUOp << 1) + RegDst;

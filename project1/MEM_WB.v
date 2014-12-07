@@ -15,6 +15,10 @@ reg [31:0] MEM_data, ALU_data;
 reg [5:0] RegWriteAddr;
 reg [1:0] WB;
 
+initial begin
+  WB = 0;
+end
+
 always @(posedge clk_i) begin
 	WB = WB_i;
 	MEM_data = MEM_data_i;

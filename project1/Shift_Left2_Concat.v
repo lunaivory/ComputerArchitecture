@@ -5,7 +5,7 @@ module Shift_Left2_Concat(
 );
 
 always @(inst_i or jumpPC_i) begin
-	jumpAddr_o = inst_i << 6 + jumpPC_i;
+	jumpAddr_o = inst_i + jumpPC_i<<26;
 end
 
 endmodule
