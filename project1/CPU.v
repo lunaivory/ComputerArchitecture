@@ -114,18 +114,18 @@ Signed_Extend Signed_Extend(
 
 Registers Registers(
     .clk_i      (clk_i),
-    .RSaddr_i   (IF_ID.inst_o[25:21]),
-    .RTaddr_i   (IF_ID.inst_o[20:16]),
-    .RDaddr_i   (MEM_WB.RegWriteAddr_o), 
-    .RDdata_i   (DataToReg.data_o),
+    .ReadReg1_i   (IF_ID.inst_o[25:21]),
+    .ReadReg2_i   (IF_ID.inst_o[20:16]),
+    .WriteReg_i   (MEM_WB.RegWriteAddr_o), 
+    .WriteData_i   (DataToReg.data_o),
     .RegWrite_i (MEM_WB.RegWrite_o)//, 
     //.RSdata_o   (), 
     //.RTdata_o   () 
 );
 
 Equal Equal(
-    .data1_i    (Registers.RSdata_o),
-    .data2_i    (Registers.RTdata_o)//,
+    .data1_i    (Registers.ReadData1_o),
+    .data2_i    (Registers.ReadData2_o)//,
     //.data_o     ()
 );
 
@@ -134,8 +134,8 @@ ID_EX ID_EX(
     .WB_i           (Flush_MUX.WB_o),
     .MEM_i          (Flush_MUX.MEM_o),
     .EX_i           (Flush_MUX.EX_o),
-    .Reg_data1_i    (Registers.RSdata_o),
-    .Reg_data2_i    (Registers.RTdata_o),
+    .Reg_data1_i    (Registers.ReadData1_o),
+    .Reg_data2_i    (Registers.ReadData2_o),
     .RsAddr_FW_i    (IF_ID.inst_o[25:21]), //RegRs
     .RtAddr_FW_i    (IF_ID.inst_o[20:16]), //RegRt
     .RtAddr_WB_i    (IF_ID.inst_o[20:16]), //RegRt
@@ -156,7 +156,7 @@ ID_EX ID_EX(
 );
 
 ForwardMUX MUX6( //mux6, 7
-    .data0_i    (Registers.RSdata_o),
+    .data0_i    (Registers.ReadData1_o),
     .data1_i    (DataToReg.data_o),
     .data2_i    (EX_MEM.ALUout_o),
     .select_i   (Forward_Unit.mux6_o)//,
@@ -164,7 +164,7 @@ ForwardMUX MUX6( //mux6, 7
 );
 
 ForwardMUX MUX7( //mux6, 7
-    .data0_i    (Registers.RTdata_o),
+    .data0_i    (Registers.ReadData2_o),
     .data1_i    (DataToReg.data_o),
     .data2_i    (EX_MEM.ALUout_o),
     .select_i   (Forward_Unit.mux7_o)//,
