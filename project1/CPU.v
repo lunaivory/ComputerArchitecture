@@ -70,7 +70,7 @@ Hazard_Detection_Unit HD(
     .IFID_RsAddr_i  (IF_ID.inst_o[25:21]),
     .IFID_RtAddr_i  (IF_ID.inst_o[20:16]),
     .IDEX_RtAddr_i  (ID_EX.RtAddr_WB_o),
-    .IDEX_MemRead_i (ID_EX.MEM_o[1])//,
+    .IDEX_MemWrite_i (ID_EX.MEM_o[0])//,
     //.PC_stall_o      (),
     //.IFID_stall_o   (),
     //.IDEX_stall_o        ()

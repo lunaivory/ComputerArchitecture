@@ -100,7 +100,7 @@ always @(Op_i)begin
     end
 
 	EX_o  = (ALUSrc << 3) + (ALUOp << 1) + RegDst;
-	MEM_o = (MemWrite << 1) + MemRead;
+	MEM_o = (MemRead << 1) + MemWrite;
 	WB_o = (RegWrite << 1) + MemtoReg;
 
 end
