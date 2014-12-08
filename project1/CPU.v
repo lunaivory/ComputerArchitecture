@@ -195,7 +195,7 @@ ALU ALU(
 
 ALU_Control ALU_Control(
     .funct_i    (ID_EX.immd_o[5:0]),
-    .ALUOp_i    (Control.EX_o[2:1])//,
+    .ALUOp_i    (ID_EX.ALU_OP_o)//,
     //.ALUCtrl_o  ()
 );
 
