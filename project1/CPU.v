@@ -60,7 +60,7 @@ IF_ID IF_ID(
 );
 
 Shift_Left2_Concat JumpAddr(
-    .inst_i     (IFID_inst_o[25:0]),
+    .inst_i     (IF_ID.inst_o[25:0]),
     .jumpPC_i   (Brench_MUX.data_o[31:28])//,
     //.jumpAddr_o(Brench_MUX.data_o[31:28])
 );
@@ -70,7 +70,7 @@ Hazard_Detection_Unit HD(
     .IFID_RsAddr_i  (IF_ID.inst_o[25:21]),
     .IFID_RtAddr_i  (IF_ID.inst_o[20:16]),
     .IDEX_RtAddr_i  (ID_EX.RtAddr_WB_o),
-    .IDEX_MemRead_i (ID_EX.MEM_o[0])//,
+    .IDEX_MemRead_i (ID_EX.MEM_o[1])//,
     //.PC_stall_o      (),
     //.IFID_stall_o   (),
     //.IDEX_stall_o        ()
@@ -87,7 +87,7 @@ Flush_MUX Flush_MUX(
 );
 
 Control Control(
-    .Op_i       (IFID_inst_o[31:26])//,
+    .Op_i       (IF_ID.inst_o[31:26])//,
     //.MUX8_o         (),
     //.jumpCtrl_o     (),
     //.brenchCtrl_o   (),
@@ -108,14 +108,14 @@ Shift_Left2 brenchx4(
 );
 
 Signed_Extend Signed_Extend(
-    .data_i     (IFID_inst_o[15:0])//,
+    .data_i     (IF_ID.inst_o[15:0])//,
     //.data_o     ()
 );
 
 Registers Registers(
     .clk_i      (clk_i),
-    .RSaddr_i   (IFID_inst_o[25:21]),
-    .RTaddr_i   (IFID_inst_o[20:16]),
+    .RSaddr_i   (IF_ID.inst_o[25:21]),
+    .RTaddr_i   (IF_ID.inst_o[20:16]),
     .RDaddr_i   (MEM_WB.RegWriteAddr_o), 
     .RDdata_i   (DataToReg.data_o),
     .RegWrite_i (MEM_WB.RegWrite_o)//, 
@@ -136,10 +136,10 @@ ID_EX ID_EX(
     .EX_i           (Flush_MUX.EX_o),
     .Reg_data1_i    (Registers.RSdata_o),
     .Reg_data2_i    (Registers.RTdata_o),
-    .RsAddr_FW_i    (IFID_inst_o[25:21]), //RegRs
-    .RtAddr_FW_i    (IFID_inst_o[20:16]), //RegRt
-    .RtAddr_WB_i    (IFID_inst_o[20:16]), //RegRt
-    .RdAddr_WB_i    (IFID_inst_o[15:11]), //RegRd
+    .RsAddr_FW_i    (IF_ID.inst_o[25:21]), //RegRs
+    .RtAddr_FW_i    (IF_ID.inst_o[20:16]), //RegRt
+    .RtAddr_WB_i    (IF_ID.inst_o[20:16]), //RegRt
+    .RdAddr_WB_i    (IF_ID.inst_o[15:11]), //RegRd
     .immd_i         (Signed_Extend.data_o)//,
     //.WB_o           (),
     //.MEM_o          (),
@@ -194,7 +194,7 @@ ALU ALU(
 );
 
 ALU_Control ALU_Control(
-    .funct_i    (ID_EX.immd_o[21:16]),
+    .funct_i    (ID_EX.immd_o[5:0]),
     .ALUOp_i    (Control.EX_o[1:0])//,
     //.ALUCtrl_o  ()
 );
