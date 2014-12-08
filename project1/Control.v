@@ -15,9 +15,9 @@ reg [2:0] ALUOp;
 
 always @(Op_i)begin
     if(Op_i == 6'b000000) begin //Rtype
-        ALUSrc    = 1'b0;
+        ALUSrc    = 1'b1;
         ALUOp     = 2'b10;
-        RegDst    = 1'b1;
+        RegDst    = 1'b0;
 
 		MemWrite  = 1'b0;
 		MemRead   = 1'b0;
@@ -29,9 +29,9 @@ always @(Op_i)begin
         brenchCtrl_o = 1'b0;
     end
     else if(Op_i == 6'b001000) begin //I type
-        ALUSrc    = 1'b1;
+        ALUSrc    = 1'b0;
         ALUOp     = 2'b00; // addi only
-        RegDst    = 1'b0;
+        RegDst    = 1'b1;
 
 		MemWrite  = 1'b0;
 		MemRead   = 1'b0;
@@ -43,9 +43,9 @@ always @(Op_i)begin
         brenchCtrl_o = 1'b0;
     end
     else if(Op_i == 6'b100011) begin //lw
-        ALUSrc    = 1'b1;
+        ALUSrc    = 1'b0;
         ALUOp     = 2'b00;
-        RegDst    = 1'b0;
+        RegDst    = 1'b1;
 
 		MemWrite  = 1'b0;
 		MemRead   = 1'b1;
@@ -57,9 +57,9 @@ always @(Op_i)begin
         brenchCtrl_o = 1'b0;
     end
     else if(Op_i == 6'b101011) begin //sw
-        ALUSrc    = 1'b1;
+        ALUSrc    = 1'b0;
         ALUOp     = 2'b00;
-        RegDst    = 1'b0;
+        RegDst    = 1'bx;
 
 		MemWrite  = 1'b1;
 		MemRead   = 1'b0;
@@ -71,9 +71,9 @@ always @(Op_i)begin
         brenchCtrl_o = 1'b0;
     end
     else if(Op_i == 6'b000100) begin //beq
-        ALUSrc    = 1'b0; //don't care?
+        ALUSrc    = 1'bx; //don't care?
         ALUOp     = 2'b01;//don't care?
-        RegDst    = 1'b1; //don't care?
+        RegDst    = 1'bx; //don't care?
 
 		MemWrite  = 1'b0;
 		MemRead   = 1'b0;
@@ -85,9 +85,9 @@ always @(Op_i)begin
         brenchCtrl_o = 1'b1;
     end
     else if(Op_i == 6'b000010) begin //j
-        ALUSrc    = 1'b0;
+        ALUSrc    = 1'bx;
         ALUOp     = 2'b01;
-        RegDst    = 1'b1;
+        RegDst    = 1'bx;
 
 		MemWrite  = 1'b0;
 		MemRead   = 1'b0;

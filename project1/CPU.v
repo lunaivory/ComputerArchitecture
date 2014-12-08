@@ -70,7 +70,7 @@ Hazard_Detection_Unit HD(
     .IFID_RsAddr_i  (IF_ID.inst_o[25:21]),
     .IFID_RtAddr_i  (IF_ID.inst_o[20:16]),
     .IDEX_RtAddr_i  (ID_EX.RtAddr_WB_o),
-    .IDEX_MemWrite_i (ID_EX.MEM_o[0])//,
+    .IDEX_MemRead_i (ID_EX.MEM_o[1])//,
     //.PC_stall_o      (),
     //.IFID_stall_o   (),
     //.IDEX_stall_o        ()
@@ -172,15 +172,15 @@ ForwardMUX MUX7( //mux6, 7
 );
 
 MUX32 MUX_ALUSrc(
-    .data1_i    (ID_EX.immd_o),
-    .data2_i    (MUX7.data_o),
+    .data1_i    (MUX7.data_o),
+    .data2_i    (ID_EX.immd_o),
     .select_i   (ID_EX.ALU_Src_o)//,
     //.data_o     ()
 );
 
 MUX5 MUX_RegDst(
-    .data1_i    (ID_EX.RdAddr_WB_o),
-    .data2_i    (ID_EX.RtAddr_WB_o),
+    .data1_i    (ID_EX.RtAddr_WB_o),
+    .data2_i    (ID_EX.RdAddr_WB_o),
     .select_i   (ID_EX.Reg_Dst_o)//,
     //.data_o     ()
 );
