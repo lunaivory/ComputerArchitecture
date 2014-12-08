@@ -20,7 +20,7 @@ assign  ReadData2_o = register[ReadReg2_i];
 
 // Write Data   
 always@(posedge clk_i) begin
-    if(RegWrite_i)
+    if(RegWrite_i && WriteReg_i!=0)
         register[WriteReg_i] <= WriteData_i;
 end
    
