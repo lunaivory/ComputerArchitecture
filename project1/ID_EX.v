@@ -2,7 +2,7 @@ module ID_EX(
   input             clk_i,
   input      [1:0]  WB_i,
   input      [1:0]  MEM_i,
-  input      [2:0]  EX_i,
+  input      [3:0]  EX_i,
   input      [31:0] Reg_data1_i,
   input      [31:0] Reg_data2_i,
   input      [4:0]  RsAddr_FW_i,
