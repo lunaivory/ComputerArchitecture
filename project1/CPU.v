@@ -156,7 +156,7 @@ ID_EX ID_EX(
 );
 
 ForwardMUX MUX6( //mux6, 7
-    .data0_i    (Registers.ReadData1_o),
+    .data0_i    (ID_EX.Reg_data1_o),
     .data1_i    (DataToReg.data_o),
     .data2_i    (EX_MEM.ALUout_o),
     .select_i   (Forward_Unit.mux6_o)//,
@@ -164,7 +164,7 @@ ForwardMUX MUX6( //mux6, 7
 );
 
 ForwardMUX MUX7( //mux6, 7
-    .data0_i    (Registers.ReadData2_o),
+    .data0_i    (ID_EX.Reg_data2_o),
     .data1_i    (DataToReg.data_o),
     .data2_i    (EX_MEM.ALUout_o),
     .select_i   (Forward_Unit.mux7_o)//,

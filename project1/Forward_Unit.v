@@ -46,7 +46,7 @@ always @(*) begin
 		if(EXMEM_WriteAddr_i == IDEX_RtAddr_i)  mux7_o <= 2'b10;
   end
   if (MEMWB_WB_i && MEMWB_WriteAddr_i != 1'b0 &&
-	   ~(EXMEM_WB_i && EXMEM_WriteAddr_i != 1'b0 && ((EXMEM_WriteAddr_i == IDEX_RsAddr_i) || (EXMEM_WriteAddr_i == IDEX_RtAddr_i)))) begin
+	   !(EXMEM_WB_i && EXMEM_WriteAddr_i != 1'b0 && ((EXMEM_WriteAddr_i == IDEX_RsAddr_i) || (EXMEM_WriteAddr_i == IDEX_RtAddr_i)))) begin
 		if(MEMWB_WriteAddr_i == IDEX_RsAddr_i)  mux6_o <= 2'b01;
 		if(MEMWB_WriteAddr_i == IDEX_RtAddr_i)  mux7_o <= 2'b01;
   end
