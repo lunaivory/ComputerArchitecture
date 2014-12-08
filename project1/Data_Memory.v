@@ -10,9 +10,9 @@ module Data_Memory(
 reg [7:0] memory [0:31];
 
 always @(posedge clk_i) begin
-	if(MemRead_i) begin
-		data_o <= (memory[addr_i] + (memory[addr_i+1] << 1) +
-					(memory[addr_i+2] << 2) + (memory[addr_i+3] << 2));
+	if(MemRead_i) begin 
+		data_o <= (memory[addr_i] + (memory[addr_i+1] << 8) +
+					(memory[addr_i+2] << 16) + (memory[addr_i+3] << 24));
 	end
 end
 
