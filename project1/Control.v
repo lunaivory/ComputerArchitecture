@@ -10,7 +10,7 @@ module Control(
 );
 
 reg ALUSrc, RegDst, MemWrite, MemRead, RegWrite, MemtoReg;
-reg [2:0] ALUOp;
+reg [1:0] ALUOp;
 
 
 always @(Op_i)begin
@@ -86,7 +86,7 @@ always @(Op_i)begin
     end
     else if(Op_i == 6'b000010) begin //j
         ALUSrc    = 1'bx;
-        ALUOp     = 2'b01;
+        ALUOp     = 2'bxx;
         RegDst    = 1'bx;
 
 		MemWrite  = 1'b0;

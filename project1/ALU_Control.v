@@ -6,7 +6,7 @@ module ALU_Control(
 );
   
 always @(*) begin
-    if (ALUOp_i == 2'd1) begin
+    if (ALUOp_i == 2'b10) begin
         case(funct_i)
             6'b100100:  ALUCtrl_o <= 3'b000;  //and
             6'b100101:  ALUCtrl_o <= 3'b001;  //or
