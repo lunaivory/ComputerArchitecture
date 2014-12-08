@@ -10,6 +10,9 @@ module Hazard_Detection_Unit(
 );
 
 always @(*) begin
+  PC_stall_o <= 1'b0;
+  IFID_stall_o <= 1'b0;
+  IDEX_stall_o <= 1'b1;
   if (IDEX_MemRead_i) begin
   //addi
     if ((Op_i == 6'b001000) && (IFID_RsAddr_i == IDEX_RtAddr_i)) begin 
@@ -24,16 +27,6 @@ always @(*) begin
       IFID_stall_o <= 1'b1;
       IDEX_stall_o <= 1'b0;
     end
-    else begin
-      PC_stall_o <= 1'b0;
-      IFID_stall_o <= 1'b0;
-      IDEX_stall_o <= 1'b1;
-    end
-  end
-  else begin
-      PC_stall_o <= 1'b0;
-      IFID_stall_o <= 1'b0;
-      IDEX_stall_o <= 1'b1;
   end
 end
 endmodule
