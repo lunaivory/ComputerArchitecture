@@ -11,9 +11,7 @@ module Control(
 
 reg ALUSrc, RegDst, MemWrite, MemRead, RegWrite, MemtoReg;
 reg [2:0] ALUOp;
-initial begin
-    
-end
+
 
 always @(Op_i)begin
     if(Op_i == 6'b000000) begin //Rtype

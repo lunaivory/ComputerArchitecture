@@ -52,7 +52,7 @@ IF_ID IF_ID(
     .clk_i          (clk_i),
     .addedPC_i      (Add_PC.data_o),
     .Hazard_stall_i (HD.IFID_stall_o),
-    .inst_i        (instruction),
+    .inst_i         (instruction),
     .jump_i         (Control.jumpCtrl_o),
     .brench_i       (Brench_AND.data_o)//,
    // .addedPC_o      (),

@@ -8,11 +8,6 @@ module Hazard_Detection_Unit(
   output reg          IFID_stall_o,
   output reg          IDEX_stall_o
 );
-initial begin
-  PC_stall_o <= 1'b0;
-  IFID_stall_o <= 1'b0;
-  IDEX_stall_o <= 1'b1;
-end
 
 always @(*) begin
   if (IDEX_MemRead_i) begin

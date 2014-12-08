@@ -8,15 +8,21 @@ module PC
     output reg  [31:0]  pc_o
 );
 
-initial begin
-    pc_o <= 32'b0;
-end
 //always@(posedge clk_i or negedge rst_i) begin
    // if(~rst_i) begin
     //    pc_o <= 32'b0;
-always@(posedge clk_i) begin
-    if(start_i  && (stall_i==1'b0))
-        pc_o <= pc_i;
-end
+reg [31:0] pc;
 
+/*always@(posedge clk_i) begin
+    if(start_i  && (stall_i==1'b0)) pc_o <= pc_i;                         
+end*/
+always@(posedge clk_i) begin
+    if(start_i) begin
+        if(stall_i)
+            pc_o = pc_o;
+        else
+            pc_o = pc_i;
+    end else
+        pc_o = 0;
+end
 endmodule
