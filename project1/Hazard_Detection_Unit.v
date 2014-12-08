@@ -3,7 +3,7 @@ module Hazard_Detection_Unit(
   input       [4:0]   IFID_RsAddr_i,
   input       [4:0]   IFID_RtAddr_i,
   input       [4:0]   IDEX_RtAddr_i,
-  input               IDEX_MemRead_i,
+  input               IDEX_MemWrite_i,
   output reg          PC_stall_o,
   output reg          IFID_stall_o,
   output reg          IDEX_stall_o
@@ -17,7 +17,7 @@ always @(*) begin
   PC_stall_o <= 1'b0;
   IFID_stall_o <= 1'b0;
   IDEX_stall_o <= 1'b1;
-  if (IDEX_MemRead_i) begin
+  if (IDEX_MemWrite_i) begin
   //addi
     if ((Op_i == 6'b001000) && (IFID_RsAddr_i == IDEX_RtAddr_i)) begin 
       PC_stall_o <= 1'b1;

@@ -30,8 +30,8 @@ always @(negedge clk_i) begin
 	MemWriteData_o <= MemWriteData;
 	RegWriteAddr_o <= RegWriteAddr;
 	WB_o <= WB;
-	MemWrite_o <= MEM_i[1];
-	MemRead_o <= MEM_i[0];
+	MemWrite_o <= MEM[0];
+	MemRead_o <= MEM[1];
 end
 
 endmodule

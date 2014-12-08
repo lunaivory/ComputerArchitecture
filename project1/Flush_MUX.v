@@ -1,5 +1,5 @@
-/*flush_i == 1 ouput都設成0
-  flush_i == 0 不變 */
+/*flush_i == 1 不變
+  flush_i == 0 把output都設成0 */
 module Flush_MUX(
   input      [1:0]  WB_i,
   input      [3:0]  EX_i,
