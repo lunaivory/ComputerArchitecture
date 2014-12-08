@@ -9,6 +9,10 @@ module Hazard_Detection_Unit(
   output reg          IDEX_stall_o
 );
 
+initial begin
+	PC_stall_o <= 0;
+end
+
 always @(*) begin
   PC_stall_o <= 1'b0;
   IFID_stall_o <= 1'b0;

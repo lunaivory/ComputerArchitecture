@@ -13,6 +13,10 @@ module PC
     //    pc_o <= 32'b0;
 reg [31:0] pc;
 
+initial begin
+	pc_o <= 0;
+end
+
 always@(posedge clk_i) begin
     if(start_i  && (stall_i==1'b0)) pc_o <= pc_i;
     if(!start_i) pc_o <= 0;                        
