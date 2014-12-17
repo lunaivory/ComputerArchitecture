@@ -1,0 +1,6 @@
+.DS_Store
+output.txt
+testbench
+report.pdf
+*.vcd
+

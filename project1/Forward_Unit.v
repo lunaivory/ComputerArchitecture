@@ -10,42 +10,46 @@ module Forward_Unit(
 );
 
 /*always @(*) begin
-	mux6_o <= 2'b00;
-	mux7_o <= 2'b00;
+	mux6_o = 2'b00;
+	mux7_o = 2'b00;
 
-	if (MEMWB_WB_i and (MEMWB_WriteAddr_i != 1'b0)
-	and not(EXMEM_WB_i and (EXMEM_WriteAddr_i != 1'b0)
-		and (EXMEM_WriteAddr_i != IDEX_RsAddr_i))
-	and (IDEX_RsAddr_i == MEMWB_WriteAddr_i)) begin
-		mux6_o <= 2'b01;
+	if (MEMWB_WB_i && (MEMWB_WriteAddr_i != 1'b0)
+	&& !(EXMEM_WB_i && (EXMEM_WriteAddr_i != 1'b0)
+		&& (EXMEM_WriteAddr_i != IDEX_RsAddr_i))
+	&& (IDEX_RsAddr_i == MEMWB_WriteAddr_i)) begin
+		mux6_o = 2'b01;
 	end
 	if (MEMWB_WB_i
-	and (MEMWB_WriteAddr_i != 1'b0)
-	and not(EXMEM_WB_i and (EXMEM_WriteAddr_i != 1'b0)
-		and (EXMEM_WriteAddr_i != IDEX_RsAddr_i))
-	and (IDEX_RtAddr_i == EXMEM_WriteAddr_i)) begin
-		mux7_o <= 2'b01;
+	&& (MEMWB_WriteAddr_i != 1'b0)
+	&& !(EXMEM_WB_i && (EXMEM_WriteAddr_i != 1'b0)
+		&& (EXMEM_WriteAddr_i != IDEX_RsAddr_i))
+	&& (IDEX_RtAddr_i == EXMEM_WriteAddr_i)) begin
+		mux7_o = 2'b01;
 	end
 
 	if (EXMEM_WriteAddr_i
-	and (EXMEM_WriteAddr_i != 1'b0)
-	and (EXMEM_WriteAddr_i == IDEX_RsAddr_i))begin
-		mux6_o <= 2'b10;
+	&& (EXMEM_WriteAddr_i != 1'b0)
+	&& (EXMEM_WriteAddr_i == IDEX_RsAddr_i))begin
+		mux6_o = 2'b10;
 	end
 	if (EXMEM_WriteAddr_i
-	and (EXMEM_WriteAddr_i != 1'b0)
-	and (EXMEM_WriteAddr_i == IDEX_RtAddr_i))begin
-		mux7_o <= 2'b10;
-	end*/
+	&& (EXMEM_WriteAddr_i != 1'b0)
+	&& (EXMEM_WriteAddr_i == IDEX_RtAddr_i))begin
+		mux7_o = 2'b10;
+	end
+*/
 
 always @(*) begin
-	mux6_o <= 2'b00;
-	mux7_o <= 2'b00;
-  if ((EXMEM_WB_i == 1'b1) && (EXMEM_WriteAddr_i != 1'b0)) begin
+	mux6_o = 2'b00;
+	mux7_o = 2'b00;
+  if (EXMEM_WB_i && (EXMEM_WriteAddr_i != 1'b0)) begin
 		if(EXMEM_WriteAddr_i == IDEX_RsAddr_i)  mux6_o = 2'b10;
 		if(EXMEM_WriteAddr_i == IDEX_RtAddr_i)  mux7_o = 2'b10;
   end
-
+  /*if (MEMWB_WB_i && MEMWB_WriteAddr_i != 1'b0 ) begin
+		if(MEMWB_WriteAddr_i == IDEX_RsAddr_i)  mux6_o = 2'b01;
+		if(MEMWB_WriteAddr_i == IDEX_RtAddr_i)  mux7_o = 2'b01;
+  end*/
   if (MEMWB_WB_i && MEMWB_WriteAddr_i != 1'b0 &&
 	   !(EXMEM_WB_i && EXMEM_WriteAddr_i != 1'b0 && (EXMEM_WriteAddr_i == IDEX_RsAddr_i)) &&
      (MEMWB_WriteAddr_i == IDEX_RsAddr_i)) mux6_o = 2'b01;
@@ -54,7 +58,5 @@ always @(*) begin
      !(EXMEM_WB_i && EXMEM_WriteAddr_i != 1'b0 && (EXMEM_WriteAddr_i == IDEX_RtAddr_i)) &&
      (MEMWB_WriteAddr_i == IDEX_RtAddr_i)) mux7_o = 2'b01;
 end
-	
-//end
 
 endmodule

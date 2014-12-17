@@ -30,12 +30,12 @@ always @(negedge clk_i) begin
   if (Hazard_stall_i == 1'b1)begin
   end
   else if((brench_i || jump_i) == 1'b1) begin
-    addedPC_o <= 32'd0;
-    inst_o <= 32'd0;
+    addedPC_o = 32'd0;
+    inst_o = 32'd0;
   end
   else begin
-    addedPC_o <= addedPC;
-    inst_o <= inst;
+    addedPC_o = addedPC;
+    inst_o = inst;
   end
 end
 endmodule
