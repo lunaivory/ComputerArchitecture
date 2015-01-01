@@ -20,6 +20,7 @@ PC PC(
     .start_i    (start_i),
     .pc_i       (Jump_MUX.data_o),
     .stall_i    (HD.PC_stall_o)//,
+	.CacheStall_i   (Data_Cache.stall_o)//,
     //.pc_o       ()
 );
 
@@ -55,6 +56,7 @@ IF_ID IF_ID(
     .inst_i         (instruction),
     .jump_i         (Control.jumpCtrl_o),
     .brench_i       (Brench_AND.data_o)//,
+	.CacheStall_i   (Data_Cache.stall_o)//,
    // .addedPC_o      (),
    // .inst_o         ()
 );
@@ -141,6 +143,7 @@ ID_EX ID_EX(
     .RtAddr_WB_i    (IF_ID.inst_o[20:16]), //RegRt
     .RdAddr_WB_i    (IF_ID.inst_o[15:11]), //RegRd
     .immd_i         (Signed_Extend.data_o)//,
+	.CacheStall_i   (Data_Cache.stall_o)//,
     //.WB_o           (),
     //.MEM_o          (),
     //.Reg_data1_o    (),
@@ -217,6 +220,7 @@ EX_MEM EX_MEM(
     .ALUout_i       (ALU.data_o), 
     .MemWriteData_i (MUX7.data_o),
     .RegWriteAddr_i (MUX_RegDst.data_o)//,
+	.CacheStall_i   (Data_Cache.stall_o)//,
     //.ALUout_o       (),
     //.MemWriteData_o (),
     //.RegWriteAddr_o (),
@@ -225,20 +229,38 @@ EX_MEM EX_MEM(
     //.MemRead_o      ()
 );
 
-Data_Memory Data_Memory(
+Data_Memory Data_Cache(
     .clk_i          (clk_i),
+    .rst_i          (),
     .addr_i         (EX_MEM.ALUout_o),
     .write_data_i   (EX_MEM.MemWriteData_o),
     .MemRead_i      (EX_MEM.MemRead_o),
     .MemWrite_i     (EX_MEM.MemWrite_o)//,
-    //.data_o         ()
+    //.mem_addr_o         (),
+    //.mem_write_data_o   (),
+    //.mem_MemRead_o      (),
+    //.mem_MemWrite_o     (),
+    //.data_o             (),
+    //.stall_o            ()
 );
+
+Data_Memory Data_Memory(
+    .clk_i          (clk_i),
+    .addr_i         (Data_Cache.ALUout_o),
+    .write_data_i   (Data_Cache.MemWriteData_o),//256bit
+    .MemRead_i      (Data_Cache.MemRead_o),
+    .MemWrite_i     (Data_Cache.MemWrite_o)//,
+    //.data_o       (),//256bit
+    //.ack_o        ()
+);
+
 MEM_WB MEM_WB(
     .clk_i          (clk_i),
     .WB_i           (EX_MEM.WB_o),
     .MEM_data_i     (Data_Memory.data_o),
     .ALU_data_i     (EX_MEM.ALUout_o), //from EX_MEM.ALUout_o
-    .RegWriteAddr_i (EX_MEM.RegWriteAddr_o)//,
+    .RegWriteAddr_i (EX_MEM.RegWriteAddr_o)
+	.CacheStall_i   (Data_Cache.stall_o)//,
     //.RegWrite_o     (),
     //.MemToReg_o     (), //to mux5
     //.Mem_data_o     (),

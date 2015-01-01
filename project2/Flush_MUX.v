@@ -11,14 +11,14 @@ module Flush_MUX(
 );
 always@(*) begin  
   if(flush_i) begin
-    WB_o = WB_i;
-    EX_o = EX_i;
-    MEM_o = MEM_i;
+    WB_o <= WB_i;
+    EX_o <= EX_i;
+    MEM_o <= MEM_i;
   end
   else begin
-    WB_o = 2'd0;
-    EX_o = 3'd0;
-    MEM_o = 2'd0;
+    WB_o <= 2'd0;
+    EX_o <= 3'd0;
+    MEM_o <= 2'd0;
   end
 end
 

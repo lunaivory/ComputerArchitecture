@@ -8,11 +8,11 @@ module ALU(
   
 always @(*) begin
     case(ALUCtrl_i)
-        3'b000:  data_o = data1_i & data2_i; //and
-        3'b001:  data_o = data1_i | data2_i; //or
-        3'b010:  data_o = data1_i + data2_i; //add addi
-        3'b011:  data_o = data1_i - data2_i; //sub
-        3'b100:  data_o = data1_i * data2_i; //mul
+        3'b000:  data_o <= data1_i & data2_i; //and
+        3'b001:  data_o <= data1_i | data2_i; //or
+        3'b010:  data_o <= data1_i + data2_i; //add addi
+        3'b011:  data_o <= data1_i - data2_i; //sub
+        3'b100:  data_o <= data1_i * data2_i; //mul
     endcase
 end
 

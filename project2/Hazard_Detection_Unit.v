@@ -10,9 +10,9 @@ module Hazard_Detection_Unit(
 );
 
 initial begin
-	PC_stall_o <= 0;
+	PC_stall_o = 0;
 end
-//combinational 裡面要用blocking
+
 always @(*) begin
   PC_stall_o = 1'b0;
   IFID_stall_o = 1'b0;

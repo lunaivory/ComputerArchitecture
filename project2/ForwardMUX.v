@@ -6,9 +6,9 @@ module ForwardMUX(
   output reg [31:0] data_o
 );
 always@(*) begin
-  if(select_i == 2'b00) data_o = data0_i;
-  if(select_i == 2'b01) data_o = data1_i;
-  if(select_i == 2'b10) data_o = data2_i;
+  if(select_i == 2'b00) data_o <= data0_i;
+  if(select_i == 2'b01) data_o <= data1_i;
+  if(select_i == 2'b10) data_o <= data2_i;
 end
 
 endmodule

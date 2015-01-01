@@ -8,8 +8,8 @@ module MUX32(
 );
 
 always@(*) begin
-    if(select_i)  data_o = data1_i;
-    else          data_o = data2_i;
+    if(select_i)  data_o <= data1_i;
+    else          data_o <= data2_i;
 end
 
 endmodule
