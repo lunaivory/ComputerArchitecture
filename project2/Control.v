@@ -1,4 +1,3 @@
-//TODO 
 module Control(
     input      [5:0]  Op_i,
     output reg        FlushMUX_o  ,

@@ -19,9 +19,9 @@ assign  ReadData1_o = register[ReadReg1_i];
 assign  ReadData2_o = register[ReadReg2_i];
 
 // Write Data   
-always@(*) begin
+always@(negedge clk_i) begin
     if(RegWrite_i && WriteReg_i!=0)
-        register[WriteReg_i] <= WriteData_i;
+        register[WriteReg_i] = WriteData_i;
 end
    
 endmodule 

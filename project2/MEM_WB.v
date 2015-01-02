@@ -4,7 +4,6 @@ module MEM_WB(
   input      [31:0] MEM_data_i,
   input      [31:0] ALU_data_i,
   input      [4:0]  RegWriteAddr_i,
-  input	            CacheStall_i,
   output reg        RegWrite_o,
   output reg        MemToReg_o,
   output reg [31:0] Mem_data_o,

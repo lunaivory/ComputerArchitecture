@@ -1,8 +1,15 @@
 module CPU
 (
-    input   clk_i, 
-    //input   rst_i,
-    input   start_i
+    input           clk_i, 
+    input   rst_i,
+    input           start_i,
+    //to Data Memory Interface
+    input  [255:0]  mem_data_i, 
+    input           mem_ack_i,  
+    output  [255:0] mem_data_o, 
+    output  [31:0]  mem_addr_o,     
+    output          mem_enable_o, 
+    output          mem_write_o
 );
 
 wire    [31:0]  instruction;//,instruct_addr;
@@ -16,11 +23,11 @@ Adder Add_PC(
 
 PC PC(
     .clk_i      (clk_i),
-    //.rst_i      (rst_i),
+    .rst_i      (rst_i),
     .start_i    (start_i),
+    .stall_i    (HD.PC_stall_o),
     .pc_i       (Jump_MUX.data_o),
-    .stall_i    (HD.PC_stall_o)//,
-	.CacheStall_i   (Data_Cache.stall_o)//,
+    .pcEnable_i ()//,
     //.pc_o       ()
 );
 
@@ -56,7 +63,6 @@ IF_ID IF_ID(
     .inst_i         (instruction),
     .jump_i         (Control.jumpCtrl_o),
     .brench_i       (Brench_AND.data_o)//,
-	.CacheStall_i   (Data_Cache.stall_o)//,
    // .addedPC_o      (),
    // .inst_o         ()
 );
@@ -114,17 +120,6 @@ Signed_Extend Signed_Extend(
     //.data_o     ()
 );
 
-Registers Registers(
-    .clk_i      (clk_i),
-    .ReadReg1_i   (IF_ID.inst_o[25:21]),
-    .ReadReg2_i   (IF_ID.inst_o[20:16]),
-    .WriteReg_i   (MEM_WB.RegWriteAddr_o), 
-    .WriteData_i   (DataToReg.data_o),
-    .RegWrite_i (MEM_WB.RegWrite_o)//, 
-    //.RSdata_o   (), 
-    //.RTdata_o   () 
-);
-
 Equal Equal(
     .data1_i    (Registers.ReadData1_o),
     .data2_i    (Registers.ReadData2_o)//,
@@ -143,7 +138,6 @@ ID_EX ID_EX(
     .RtAddr_WB_i    (IF_ID.inst_o[20:16]), //RegRt
     .RdAddr_WB_i    (IF_ID.inst_o[15:11]), //RegRd
     .immd_i         (Signed_Extend.data_o)//,
-	.CacheStall_i   (Data_Cache.stall_o)//,
     //.WB_o           (),
     //.MEM_o          (),
     //.Reg_data1_o    (),
@@ -220,7 +214,6 @@ EX_MEM EX_MEM(
     .ALUout_i       (ALU.data_o), 
     .MemWriteData_i (MUX7.data_o),
     .RegWriteAddr_i (MUX_RegDst.data_o)//,
-	.CacheStall_i   (Data_Cache.stall_o)//,
     //.ALUout_o       (),
     //.MemWriteData_o (),
     //.RegWriteAddr_o (),
@@ -229,38 +222,20 @@ EX_MEM EX_MEM(
     //.MemRead_o      ()
 );
 
-Data_Memory Data_Cache(
+Data_Memory Data_Memory(
     .clk_i          (clk_i),
-    .rst_i          (),
     .addr_i         (EX_MEM.ALUout_o),
     .write_data_i   (EX_MEM.MemWriteData_o),
     .MemRead_i      (EX_MEM.MemRead_o),
     .MemWrite_i     (EX_MEM.MemWrite_o)//,
-    //.mem_addr_o         (),
-    //.mem_write_data_o   (),
-    //.mem_MemRead_o      (),
-    //.mem_MemWrite_o     (),
-    //.data_o             (),
-    //.stall_o            ()
+    //.data_o         ()
 );
-
-Data_Memory Data_Memory(
-    .clk_i          (clk_i),
-    .addr_i         (Data_Cache.ALUout_o),
-    .write_data_i   (Data_Cache.MemWriteData_o),//256bit
-    .MemRead_i      (Data_Cache.MemRead_o),
-    .MemWrite_i     (Data_Cache.MemWrite_o)//,
-    //.data_o       (),//256bit
-    //.ack_o        ()
-);
-
 MEM_WB MEM_WB(
     .clk_i          (clk_i),
     .WB_i           (EX_MEM.WB_o),
     .MEM_data_i     (Data_Memory.data_o),
     .ALU_data_i     (EX_MEM.ALUout_o), //from EX_MEM.ALUout_o
-    .RegWriteAddr_i (EX_MEM.RegWriteAddr_o)
-	.CacheStall_i   (Data_Cache.stall_o)//,
+    .RegWriteAddr_i (EX_MEM.RegWriteAddr_o)//,
     //.RegWrite_o     (),
     //.MemToReg_o     (), //to mux5
     //.Mem_data_o     (),
@@ -273,6 +248,42 @@ MUX32 DataToReg(
     .data2_i    (MEM_WB.ALU_data_o),
     .select_i   (MEM_WB.MemToReg_o)//,
     //.data_o     ()
+);
+
+
+Registers Registers(
+    .clk_i      (clk_i),
+    .ReadReg1_i   (IF_ID.inst_o[25:21]),
+    .ReadReg2_i   (IF_ID.inst_o[20:16]),
+    .WriteReg_i   (MEM_WB.RegWriteAddr_o), 
+    .WriteData_i   (DataToReg.data_o),
+    .RegWrite_i (MEM_WB.RegWrite_o)//, 
+    //.RSdata_o   (), 
+    //.RTdata_o   () 
+);
+
+//data cache
+dcache_top dcache
+(
+    // System clock, reset and stall
+    .clk_i(clk_i), 
+    .rst_i(rst_i),
+    
+    // to Data Memory interface     
+    .mem_data_i(mem_data_i), 
+    .mem_ack_i(mem_ack_i),  
+    .mem_data_o(mem_data_o), 
+    .mem_addr_o(mem_addr_o),    
+    .mem_enable_o(mem_enable_o), 
+    .mem_write_o(mem_write_o), 
+    
+    // to CPU interface 
+    .p1_data_i(), 
+    .p1_addr_i(),   
+    .p1_MemRead_i(), 
+    .p1_MemWrite_i(), 
+    .p1_data_o(), 
+    .p1_stall_o()
 );
 
 endmodule
