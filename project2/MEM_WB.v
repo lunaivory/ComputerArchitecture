@@ -23,12 +23,15 @@ always @(posedge clk_i) begin
 	RegWriteAddr = RegWriteAddr_i;
 end
 
-always @(negedge clk_i) begin
-	RegWrite_o = WB[1];
-	MemToReg_o = WB[0];
-	Mem_data_o = MEM_data;
-	ALU_data_o = ALU_data;
-	RegWriteAddr_o = RegWriteAddr;
+always @(negedge clk_i) begin 
+  if (CacheStall_i) begin end
+  else begin
+  	RegWrite_o = WB[1];
+  	MemToReg_o = WB[0];
+  	Mem_data_o = MEM_data;
+  	ALU_data_o = ALU_data;
+  	RegWriteAddr_o = RegWriteAddr;
+  end
 end
 
 endmodule

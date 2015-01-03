@@ -46,19 +46,22 @@ always @(posedge clk_i) begin
 end
 
 always @(negedge clk_i) begin
-	ALU_Src_o <= EX[3];
-	ALU_OP_o <= EX[2:1];
-	Reg_Dst_o <= EX[0];
+  if (CacheStall_i) begin end
+  else begin
+  	ALU_Src_o <= EX[3];
+  	ALU_OP_o <= EX[2:1];
+  	Reg_Dst_o <= EX[0];
 
-	Reg_data1_o <= Reg_data1;
-	Reg_data2_o <= Reg_data2;
-	immd_o <= immd;
-	RsAddr_FW_o <= RsAddr_FW;
-	RtAddr_FW_o <= RtAddr_FW;
-	RtAddr_WB_o <= RtAddr_WB;
-	RdAddr_WB_o <= RdAddr_WB;
-	WB_o <= WB;
-	MEM_o <= MEM;
+  	Reg_data1_o <= Reg_data1;
+  	Reg_data2_o <= Reg_data2;
+  	immd_o <= immd;
+  	RsAddr_FW_o <= RsAddr_FW;
+  	RtAddr_FW_o <= RtAddr_FW;
+  	RtAddr_WB_o <= RtAddr_WB;
+  	RdAddr_WB_o <= RdAddr_WB;
+  	WB_o <= WB;
+  	MEM_o <= MEM;
+  end
 end
 
 endmodule

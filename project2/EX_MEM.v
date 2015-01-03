@@ -5,7 +5,7 @@ module EX_MEM(
     input      [31:0] ALUout_i,
     input      [31:0] MemWriteData_i,
     input      [4:0]  RegWriteAddr_i,
-	input      		  CacheStall_i,
+	  input      		    CacheStall_i,
     output reg [31:0] ALUout_o,
     output reg [31:0] MemWriteData_o,
     output reg [4:0]  RegWriteAddr_o,
@@ -27,12 +27,15 @@ always @(posedge clk_i) begin
 end
 
 always @(negedge clk_i) begin
-	ALUout_o <= ALUout;
-	MemWriteData_o <= MemWriteData;
-	RegWriteAddr_o <= RegWriteAddr;
-	WB_o <= WB;
-	MemWrite_o <= MEM[0];
-	MemRead_o <= MEM[1];
+  if (CacheStall_i) begin end
+  else begin
+  	ALUout_o <= ALUout;
+  	MemWriteData_o <= MemWriteData;
+  	RegWriteAddr_o <= RegWriteAddr;
+  	WB_o <= WB;
+  	MemWrite_o <= MEM[0];
+  	MemRead_o <= MEM[1];
+  end
 end
 
 endmodule

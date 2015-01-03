@@ -28,15 +28,18 @@ always @(posedge clk_i) begin
 end
 
 always @(negedge clk_i) begin
-  if (Hazard_stall_i == 1'b1)begin
-  end
-  else if((brench_i || jump_i) == 1'b1) begin
-    addedPC_o = 32'd0;
-    inst_o = 32'd0;
-  end
+  if (CacheStall_i) begin end
   else begin
-    addedPC_o = addedPC;
-    inst_o = inst;
+    if (Hazard_stall_i == 1'b1)begin
+    end
+    else if((brench_i || jump_i) == 1'b1) begin
+      addedPC_o = 32'd0;
+      inst_o = 32'd0;
+    end
+    else begin
+      addedPC_o = addedPC;
+      inst_o = inst;
+    end
   end
 end
 endmodule
