@@ -13,6 +13,7 @@ module IF_ID(
   input       [31:0] inst_i,
   input              jump_i,
   input              brench_i,
+  input  			 CacheStall_i,
   output reg  [31:0] addedPC_o,
   output reg  [31:0] inst_o 
 );

@@ -5,6 +5,7 @@ module PC
     input               start_i,
     input       [31:0]  pc_i,
     input               stall_i,
+	input      		    CacheStall_i,
     output reg  [31:0]  pc_o
 );
 

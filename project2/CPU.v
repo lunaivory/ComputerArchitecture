@@ -62,7 +62,8 @@ IF_ID IF_ID(
     .Hazard_stall_i (HD.IFID_stall_o),
     .inst_i         (instruction),
     .jump_i         (Control.jumpCtrl_o),
-    .brench_i       (Brench_AND.data_o)//,
+    .brench_i       (Brench_AND.data_o),
+	.CacheStall_i   (dcache.p1_stall_o)//,
    // .addedPC_o      (),
    // .inst_o         ()
 );
@@ -137,7 +138,8 @@ ID_EX ID_EX(
     .RtAddr_FW_i    (IF_ID.inst_o[20:16]), //RegRt
     .RtAddr_WB_i    (IF_ID.inst_o[20:16]), //RegRt
     .RdAddr_WB_i    (IF_ID.inst_o[15:11]), //RegRd
-    .immd_i         (Signed_Extend.data_o)//,
+    .immd_i         (Signed_Extend.data_o),
+	.CacheStall_i   (dcache.p1_stall_o)//,
     //.WB_o           (),
     //.MEM_o          (),
     //.Reg_data1_o    (),
@@ -213,7 +215,8 @@ EX_MEM EX_MEM(
     .MEM_i          (ID_EX.MEM_o),
     .ALUout_i       (ALU.data_o), 
     .MemWriteData_i (MUX7.data_o),
-    .RegWriteAddr_i (MUX_RegDst.data_o)//,
+    .RegWriteAddr_i (MUX_RegDst.data_o),
+	.CacheStall_i   (dcache.p1_stall_o)//,
     //.ALUout_o       (),
     //.MemWriteData_o (),
     //.RegWriteAddr_o (),
@@ -222,20 +225,22 @@ EX_MEM EX_MEM(
     //.MemRead_o      ()
 );
 
-Data_Memory Data_Memory(
-    .clk_i          (clk_i),
-    .addr_i         (EX_MEM.ALUout_o),
-    .write_data_i   (EX_MEM.MemWriteData_o),
-    .MemRead_i      (EX_MEM.MemRead_o),
-    .MemWrite_i     (EX_MEM.MemWrite_o)//,
-    //.data_o         ()
-);
+//Data_Memory Data_Memory(
+//    .clk_i          (clk_i),
+//    .addr_i         (EX_MEM.ALUout_o),
+//    .write_data_i   (EX_MEM.MemWriteData_o),
+//    .MemRead_i      (EX_MEM.MemRead_o),
+//    .MemWrite_i     (EX_MEM.MemWrite_o)//,
+//    //.data_o         ()
+//);
+
 MEM_WB MEM_WB(
     .clk_i          (clk_i),
     .WB_i           (EX_MEM.WB_o),
-    .MEM_data_i     (Data_Memory.data_o),
+    .MEM_data_i     (dcache.data_o),
     .ALU_data_i     (EX_MEM.ALUout_o), //from EX_MEM.ALUout_o
-    .RegWriteAddr_i (EX_MEM.RegWriteAddr_o)//,
+    .RegWriteAddr_i (EX_MEM.RegWriteAddr_o),
+	.CacheStall_i   (dcache.p1_stall_o)//,
     //.RegWrite_o     (),
     //.MemToReg_o     (), //to mux5
     //.Mem_data_o     (),
@@ -244,7 +249,7 @@ MEM_WB MEM_WB(
 );
 
 MUX32 DataToReg(
-    .data1_i    (Data_Memory.data_o),
+    .data1_i    (MEM_WB.Mem_data_o),
     .data2_i    (MEM_WB.ALU_data_o),
     .select_i   (MEM_WB.MemToReg_o)//,
     //.data_o     ()
@@ -278,12 +283,12 @@ dcache_top dcache
     .mem_write_o(mem_write_o), 
     
     // to CPU interface 
-    .p1_data_i(), 
-    .p1_addr_i(),   
-    .p1_MemRead_i(), 
-    .p1_MemWrite_i(), 
-    .p1_data_o(), 
-    .p1_stall_o()
+    .p1_data_i(EX_MEM.MemWriteData_o), 
+    .p1_addr_i(EX_MEM.ALUout_o),   
+    .p1_MemRead_i(EX_MEM.MemRead_o), 
+    .p1_MemWrite_i(EX_MEM.MemWrite_o)//, 
+    //.p1_data_o(), 
+    //.p1_stall_o()
 );
 
 endmodule

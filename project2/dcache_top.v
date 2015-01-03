@@ -91,16 +91,29 @@ assign  cache_dirty  = write_hit;
 
 // tag comparator
 //!!! add you code here!  (hit=...?,  r_hit_data=...?)
+assign  hit 		= ((p1_tag == cache_sram_tag) & sram_valid) ? 1'b1 : 1'b0;
+assign  r_hit_data 	= (hit) ? sram_cache_data : 256'b0;
   
 // read data :  256-bit to 32-bit
 always@(p1_offset or r_hit_data) begin
   //!!! add you code here! (p1_data=...?)
+  if(hit) begin
+	p1_data = r_hit_data[p1_offset];
+  end else begin
+	p1_data = mem_data_i;
+  end
 end
 
 
 // write data :  32-bit to 256-bit
 always@(p1_offset or r_hit_data or p1_data_i) begin
   //!!! add you code here! (w_hit_data=...?)
+  if(hit) begin
+	w_hit_data = r_hit_data;
+  end else begin
+	w_hit_data = mem_data_i;
+  end
+  w_hit_data[p1_offset] = p1_data_i;
 end
 
 
@@ -126,16 +139,25 @@ always@(posedge clk_i or negedge rst_i) begin
       STATE_MISS: begin
         if(sram_dirty) begin    //write back if dirty
                   //!!! add you code here! 
+	      mem_enable_o = 1'b1;
           state <= STATE_WRITEBACK;
         end
         else begin          //write allocate: write miss = read miss + write hit; read miss = read miss + read hit
                   //!!! add you code here! 
+	      mem_enable_o = 1'b1;
           state <= STATE_READMISS;
         end
       end
       STATE_READMISS: begin
         if(mem_ack_i) begin     //wait for data memory acknowledge
                   //!!! add you code here! 
+		  write_back   = 1'b0;
+          mem_write_o  = 1'b0;
+		
+	      cache_we     = 1'b1;
+          sram_valid   = 1'b1;
+          sram_dirty   = 1'b0;
+
           state <= STATE_READMISSOK;
         end
         else begin
@@ -144,11 +166,17 @@ always@(posedge clk_i or negedge rst_i) begin
       end
       STATE_READMISSOK: begin     //wait for data memory acknowledge
                   //!!! add you code here! 
+	    mem_enable_o = 1'b0;
+	    cache_we     = 1'b0;
+
         state <= STATE_IDLE;
       end
       STATE_WRITEBACK: begin
         if(mem_ack_i) begin     //wait for data memory acknowledge
                   //!!! add you code here! 
+		  write_back   = 1'b1;
+          mem_write_o  = 1'b1;
+
           state <= STATE_READMISS;
         end
         else begin

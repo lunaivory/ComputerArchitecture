@@ -10,6 +10,7 @@ module ID_EX(
   input      [4:0]  RtAddr_WB_i,
   input      [4:0]  RdAddr_WB_i,
   input      [31:0] immd_i,
+  input 			CacheStall_i,
   output reg [1:0]  WB_o,
   output reg [1:0]  MEM_o,
   output reg [31:0] Reg_data1_o,

@@ -5,6 +5,7 @@ module EX_MEM(
     input      [31:0] ALUout_i,
     input      [31:0] MemWriteData_i,
     input      [4:0]  RegWriteAddr_i,
+	input      		  CacheStall_i,
     output reg [31:0] ALUout_o,
     output reg [31:0] MemWriteData_o,
     output reg [4:0]  RegWriteAddr_o,
