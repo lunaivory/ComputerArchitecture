@@ -19,7 +19,7 @@ initial begin
 end
 
 always@(posedge clk_i) begin
-    if(start_i  && (stall_i==1'b0)) pc_o = pc_i;
+    if(start_i  && (stall_i==1'b0) && (CacheStall_i==1'b0)) pc_o = pc_i;
     if(!start_i) pc_o = 0;                        
 end
 /*always@(posedge clk_i) begin
