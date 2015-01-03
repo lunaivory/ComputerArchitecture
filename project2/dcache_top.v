@@ -2,24 +2,24 @@
 module dcache_top
 (
     // System clock, reset and stall
-  input       clk_i; 
-  input       rst_i;
+  input       clk_i,
+  input       rst_i,
   
   // to Data Memory interface   
-  input [256-1:0]   mem_data_i; 
-  input             mem_ack_i;     
-  output  [256-1:0] mem_data_o; 
-  output  [32-1:0]  mem_addr_o;   
-  output            mem_enable_o; 
-  output            mem_write_o;
+  input [256-1:0]   mem_data_i,
+  input             mem_ack_i,   
+  output  [256-1:0] mem_data_o,
+  output  [32-1:0]  mem_addr_o, 
+  output            mem_enable_o,
+  output            mem_write_o,
   
   // to CPU(core) interface 
-  input [32-1:0]  p1_data_i; 
-  input [32-1:0]  p1_addr_i;  
-  input           p1_MemRead_i; 
-  input           p1_MemWrite_i; 
-  output  [32-1:0]p1_data_o; 
-  output          p1_stall_o; 
+  input [32-1:0]  p1_data_i,
+  input [32-1:0]  p1_addr_i,
+  input           p1_MemRead_i,
+  input           p1_MemWrite_i,
+  output  [32-1:0]p1_data_o,
+  output          p1_stall_o
 );
 //
 // to SRAM interface
@@ -91,7 +91,7 @@ assign  cache_dirty  = write_hit;
 
 // tag comparator
 //!!! add you code here!  (hit=...?,  r_hit_data=...?)
-assign  hit 		= ((p1_tag == cache_sram_tag) & sram_valid) ? 1'b1 : 1'b0;
+assign  hit 		= ((p1_tag == sram_tag) & sram_valid) ? 1'b1 : 1'b0;
 assign  r_hit_data 	= (hit) ? sram_cache_data : 256'b0;
   
 // read data :  256-bit to 32-bit
@@ -139,12 +139,12 @@ always@(posedge clk_i or negedge rst_i) begin
       STATE_MISS: begin
         if(sram_dirty) begin    //write back if dirty
                   //!!! add you code here! 
-	      mem_enable_o = 1'b1;
+	      mem_enable = 1'b1;
           state <= STATE_WRITEBACK;
         end
         else begin          //write allocate: write miss = read miss + write hit; read miss = read miss + read hit
                   //!!! add you code here! 
-	      mem_enable_o = 1'b1;
+	      mem_enable = 1'b1;
           state <= STATE_READMISS;
         end
       end
@@ -152,11 +152,9 @@ always@(posedge clk_i or negedge rst_i) begin
         if(mem_ack_i) begin     //wait for data memory acknowledge
                   //!!! add you code here! 
 		  write_back   = 1'b0;
-          mem_write_o  = 1'b0;
+          mem_write  = 1'b0;
 		
 	      cache_we     = 1'b1;
-          sram_valid   = 1'b1;
-          sram_dirty   = 1'b0;
 
           state <= STATE_READMISSOK;
         end
@@ -166,7 +164,7 @@ always@(posedge clk_i or negedge rst_i) begin
       end
       STATE_READMISSOK: begin     //wait for data memory acknowledge
                   //!!! add you code here! 
-	    mem_enable_o = 1'b0;
+	    mem_enable = 1'b0;
 	    cache_we     = 1'b0;
 
         state <= STATE_IDLE;
@@ -175,7 +173,7 @@ always@(posedge clk_i or negedge rst_i) begin
         if(mem_ack_i) begin     //wait for data memory acknowledge
                   //!!! add you code here! 
 		  write_back   = 1'b1;
-          mem_write_o  = 1'b1;
+          mem_write  = 1'b1;
 
           state <= STATE_READMISS;
         end

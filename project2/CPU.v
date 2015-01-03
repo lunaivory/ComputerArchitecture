@@ -26,8 +26,8 @@ PC PC(
     .rst_i      (rst_i),
     .start_i    (start_i),
     .stall_i    (HD.PC_stall_o),
-    .pc_i       (Jump_MUX.data_o),
-    .pcEnable_i ()//,
+    .pcEnable_i (~dcache.p1_stall_o),
+    .pc_i       (Jump_MUX.data_o)//,
     //.pc_o       ()
 );
 
@@ -237,7 +237,7 @@ EX_MEM EX_MEM(
 MEM_WB MEM_WB(
     .clk_i          (clk_i),
     .WB_i           (EX_MEM.WB_o),
-    .MEM_data_i     (dcache.data_o),
+    .MEM_data_i     (dcache.p1_data_o),
     .ALU_data_i     (EX_MEM.ALUout_o), //from EX_MEM.ALUout_o
     .RegWriteAddr_i (EX_MEM.RegWriteAddr_o),
 	.CacheStall_i   (dcache.p1_stall_o)//,
