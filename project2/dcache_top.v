@@ -98,7 +98,7 @@ assign  r_hit_data 	= (hit) ? sram_cache_data : 256'b0;
 always@(p1_offset or r_hit_data) begin
   //!!! add you code here! (p1_data=...?)
   if(hit) begin
-	  p1_data = r_hit_data[(p1_offset+1)<<4: p1_offset<<4];
+	  p1_data = r_hit_data[(p1_offset+1)<<4 -: 32];
   end else begin
 	  p1_data = mem_data_i;
   end
@@ -113,7 +113,7 @@ always@(p1_offset or r_hit_data or p1_data_i) begin
   end else begin
 	  w_hit_data = mem_data_i;
   end
-  w_hit_data[(p1_offset+1)<<4: p1_offset<<4] = p1_data_i;
+  w_hit_data[(p1_offset+1)<<4 -: 32] = p1_data_i;
    // w_hit_data[p1_offset<<3 - 1] = p1_data_i;
 end
 

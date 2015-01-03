@@ -23,12 +23,12 @@ Cycle:          94, Write Hit , Address: 00000414, Write Data: 00005678
 Cycle:          96, Write Hit , Address: 00000418, Write Data: 00006789
 Cycle:          98, Write Hit , Address: 0000041c, Write Data: 00007890
 Cycle:          99, Read Miss , Address: 00000000, Read Data : 00000000 (Write Back!)
-Cycle:         121, Read Hit  , Address: 00000008, Read Data : 00000000
+Cycle:         121, Read Hit  , Address: 00000008, Read Data : 00000001
 Cycle:         122, Read Hit  , Address: 0000000c, Read Data : 00000001
 Cycle:         123, Read Hit  , Address: 0000000c, Read Data : 00000001
-Cycle:         124, Read Hit  , Address: 00000010, Read Data : 00000000
+Cycle:         124, Read Hit  , Address: 00000010, Read Data : 00000001
 Cycle:         125, Read Hit  , Address: 00000014, Read Data : 00000001
-Cycle:         126, Read Hit  , Address: 00000018, Read Data : 00000000
+Cycle:         126, Read Hit  , Address: 00000018, Read Data : 00000001
 Cycle:         127, Read Hit  , Address: 0000001c, Read Data : 00000001
 Cycle:         128, Read Hit  , Address: 00000020, Read Data : 00000000
 Cycle:         129, Read Hit  , Address: 00000024, Read Data : 00000000
