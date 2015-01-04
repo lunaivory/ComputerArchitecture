@@ -23,8 +23,11 @@ reg [31:0] inst;
 
 
 always @(posedge clk_i) begin
-  addedPC <= addedPC_i;
-  inst <= inst_i;
+  //if (CacheStall_i) begin end
+  //else begin 
+    addedPC <= addedPC_i;
+    inst <= inst_i;
+  //end
 end
 
 always @(negedge clk_i) begin

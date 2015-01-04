@@ -17,20 +17,23 @@ reg [5:0] RegWriteAddr;
 reg [1:0] WB;
 
 always @(posedge clk_i) begin
-	WB = WB_i;
-	MEM_data = MEM_data_i;
-	ALU_data = ALU_data_i;
-	RegWriteAddr = RegWriteAddr_i;
+	//if (CacheStall_i) begin end
+  //else begin
+    WB = WB_i;
+  	MEM_data <= MEM_data_i;
+  	ALU_data <= ALU_data_i;
+  	RegWriteAddr <= RegWriteAddr_i;
+  //end
 end
 
 always @(negedge clk_i) begin 
   if (CacheStall_i) begin end
   else begin
-  	RegWrite_o = WB[1];
-  	MemToReg_o = WB[0];
-  	Mem_data_o = MEM_data;
-  	ALU_data_o = ALU_data;
-  	RegWriteAddr_o = RegWriteAddr;
+  	RegWrite_o <= WB[1];
+  	MemToReg_o <= WB[0];
+  	Mem_data_o <= MEM_data;
+  	ALU_data_o <= ALU_data;
+  	RegWriteAddr_o <= RegWriteAddr;
   end
 end
 

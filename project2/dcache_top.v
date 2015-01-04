@@ -98,7 +98,7 @@ assign  r_hit_data 	= (hit) ? sram_cache_data : 256'b0;
 always@(p1_offset or r_hit_data) begin
   //!!! add you code here! (p1_data=...?)
   if(hit) begin
-	  p1_data = r_hit_data[p1_offset];
+	  p1_data = r_hit_data[p1_offset<<3 - 1];
   end else begin
 	  p1_data = mem_data_i;
   end
@@ -110,10 +110,11 @@ always@(p1_offset or r_hit_data or p1_data_i) begin
   //!!! add you code here! (w_hit_data=...?)
   if(hit) begin
 	  w_hit_data = r_hit_data;
+    w_hit_data[p1_offset<<3 - 1] = p1_data_i;
   end else begin
 	  w_hit_data = mem_data_i;
   end
-  w_hit_data[p1_offset] = p1_data_i;
+   // w_hit_data[p1_offset<<3 - 1] = p1_data_i;
 end
 
 
@@ -140,7 +141,9 @@ always@(posedge clk_i or negedge rst_i) begin
         if(sram_dirty) begin    //write back if dirty
                   //!!! add you code here! 
   	      mem_enable = 1'b1;
-            state <= STATE_WRITEBACK;
+          write_back   = 1'b1;
+          mem_write  = 1'b1;
+          state <= STATE_WRITEBACK;
         end
         else begin          //write allocate: write miss = read miss + write hit; read miss = read miss + read hit
                   //!!! add you code here! 
@@ -163,17 +166,16 @@ always@(posedge clk_i or negedge rst_i) begin
       STATE_READMISSOK: begin     //wait for data memory acknowledge
                   //!!! add you code here! 
   	    mem_enable = 1'b0;
-  	    cache_we     = 1'b0;
+  	    cache_we   = 1'b0;
         state <= STATE_IDLE;
       end
       STATE_WRITEBACK: begin
         if(mem_ack_i) begin     //wait for data memory acknowledge
                   //!!! add you code here! 
-		      write_back   = 1'b1;
-          mem_write  = 1'b1;
+          write_back   = 1'b0;
+          mem_write  = 1'b0;
           state <= STATE_READMISS;
-        end
-        else begin
+        end else begin
           state <= STATE_WRITEBACK;
         end
       end

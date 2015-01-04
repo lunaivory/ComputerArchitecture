@@ -31,10 +31,10 @@ Cycle:         125, Read Hit  , Address: 00000014, Read Data : 00000001
 Cycle:         126, Read Hit  , Address: 00000018, Read Data : 00000000
 Cycle:         127, Read Hit  , Address: 0000001c, Read Data : 00000001
 Cycle:         128, Read Hit  , Address: 00000020, Read Data : 00000000
-Cycle:         129, Read Hit  , Address: 00000024, Read Data : 00000001
+Cycle:         129, Read Hit  , Address: 00000024, Read Data : 00000000
 Cycle:         130, Read Hit  , Address: 00000028, Read Data : 00000000
-Cycle:         131, Read Hit  , Address: 0000002c, Read Data : 00000001
+Cycle:         131, Read Hit  , Address: 0000002c, Read Data : 00000000
 Cycle:         132, Read Hit  , Address: 00000030, Read Data : 00000000
-Cycle:         133, Read Hit  , Address: 00000034, Read Data : 00000001
+Cycle:         133, Read Hit  , Address: 00000034, Read Data : 00000000
 Cycle:         134, Read Hit  , Address: 00000038, Read Data : 00000000
-Cycle:         135, Read Hit  , Address: 0000003c, Read Data : 00000001
+Cycle:         135, Read Hit  , Address: 0000003c, Read Data : 00000000

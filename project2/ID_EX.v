@@ -33,16 +33,19 @@ reg [1:0] WB, MEM;
 
 
 always @(posedge clk_i) begin
-	Reg_data1 <= Reg_data1_i;
-	Reg_data2 <= Reg_data2_i;
-	immd <= immd_i;
-	RsAddr_FW <= RsAddr_FW_i;
-	RtAddr_FW <= RtAddr_FW_i;
-	RtAddr_WB <= RtAddr_WB_i;
-	RdAddr_WB <= RdAddr_WB_i;
-	EX <= EX_i;
-	WB <= WB_i;
-	MEM <= MEM_i;
+	//if (CacheStall_i) begin end
+  //else begin
+    Reg_data1 <= Reg_data1_i;
+  	Reg_data2 <= Reg_data2_i;
+  	immd <= immd_i;
+  	RsAddr_FW <= RsAddr_FW_i;
+  	RtAddr_FW <= RtAddr_FW_i;
+  	RtAddr_WB <= RtAddr_WB_i;
+  	RdAddr_WB <= RdAddr_WB_i;
+  	EX <= EX_i;
+  	WB <= WB_i;
+  	MEM <= MEM_i;
+  //end
 end
 
 always @(negedge clk_i) begin
