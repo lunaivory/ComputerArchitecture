@@ -108,12 +108,14 @@ end
 // write data :  32-bit to 256-bit
 always@(p1_offset or r_hit_data or p1_data_i) begin
   //!!! add you code here! (w_hit_data=...?)
-  if(hit) begin
+  if(write_hit) begin
 	  w_hit_data = r_hit_data;
   end else begin
 	  w_hit_data = mem_data_i;
   end
-  w_hit_data[(p1_offset+1)<<4 -: 32] = p1_data_i;
+  if (p1_MemWrite_i) begin
+    w_hit_data[(p1_offset+1)<<4 -: 32] = p1_data_i;
+  end
    // w_hit_data[p1_offset<<3 - 1] = p1_data_i;
 end
 

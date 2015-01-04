@@ -23,18 +23,18 @@ Cycle:          94, Write Hit , Address: 00000414, Write Data: 00005678
 Cycle:          96, Write Hit , Address: 00000418, Write Data: 00006789
 Cycle:          98, Write Hit , Address: 0000041c, Write Data: 00007890
 Cycle:          99, Read Miss , Address: 00000000, Read Data : 00000000 (Write Back!)
-Cycle:         121, Read Hit  , Address: 00000008, Read Data : 00000001
-Cycle:         122, Read Hit  , Address: 0000000c, Read Data : 00000001
-Cycle:         123, Read Hit  , Address: 0000000c, Read Data : 00000001
-Cycle:         124, Read Hit  , Address: 00000010, Read Data : 00000001
-Cycle:         125, Read Hit  , Address: 00000014, Read Data : 00000001
-Cycle:         126, Read Hit  , Address: 00000018, Read Data : 00000001
-Cycle:         127, Read Hit  , Address: 0000001c, Read Data : 00000001
-Cycle:         128, Read Hit  , Address: 00000020, Read Data : 00000000
-Cycle:         129, Read Hit  , Address: 00000024, Read Data : 00000000
-Cycle:         130, Read Hit  , Address: 00000028, Read Data : 00000000
-Cycle:         131, Read Hit  , Address: 0000002c, Read Data : 00000000
-Cycle:         132, Read Hit  , Address: 00000030, Read Data : 00000000
-Cycle:         133, Read Hit  , Address: 00000034, Read Data : 00000000
-Cycle:         134, Read Hit  , Address: 00000038, Read Data : 00000000
-Cycle:         135, Read Hit  , Address: 0000003c, Read Data : 00000000
+Cycle:         121, Read Hit  , Address: 00000008, Read Data : 00002222
+Cycle:         122, Read Hit  , Address: 0000000c, Read Data : 00003333
+Cycle:         123, Read Hit  , Address: 0000000c, Read Data : 00003333
+Cycle:         124, Read Hit  , Address: 00000010, Read Data : xxxxX444
+Cycle:         125, Read Hit  , Address: 00000014, Read Data : xxxxxxxx
+Cycle:         126, Read Hit  , Address: 00000018, Read Data : xxxxxxxx
+Cycle:         127, Read Hit  , Address: 0000001c, Read Data : xxxxxxxx
+Cycle:         128, Read Hit  , Address: 00000020, Read Data : 0000Xxxx
+Cycle:         129, Read Hit  , Address: 00000024, Read Data : 00000999
+Cycle:         130, Read Hit  , Address: 00000028, Read Data : 00000aaa
+Cycle:         131, Read Hit  , Address: 0000002c, Read Data : 00000bbb
+Cycle:         132, Read Hit  , Address: 00000030, Read Data : xxxxXccc
+Cycle:         133, Read Hit  , Address: 00000034, Read Data : xxxxxxxx
+Cycle:         134, Read Hit  , Address: 00000038, Read Data : xxxxxxxx
+Cycle:         135, Read Hit  , Address: 0000003c, Read Data : xxxxxxxx
