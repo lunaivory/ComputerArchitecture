@@ -64,9 +64,8 @@ reg   [31:0]    p1_data;
 
 // project1 interface
 assign  p1_req     = p1_MemRead_i | p1_MemWrite_i;
-assign  p1_offset  = p1_addr_i[4:0];
-assign  p1_index   = p1_addr_i[9:5];
-assign  p1_tag     = p1_addr_i[31:10];
+
+
 assign  p1_stall_o = ~hit & p1_req;
 assign  p1_data_o  = p1_data; 
 
@@ -91,14 +90,14 @@ assign  cache_dirty  = write_hit;
 
 // tag comparator
 //!!! add you code here!  (hit=...?,  r_hit_data=...?)
-assign  hit 		= ((p1_tag == sram_tag) & sram_valid) ? 1'b1 : 1'b0;
+assign  hit 		= ((p1_tag == sram_tag) && sram_valid == 1'b1) ? 1'b1 : 1'b0;
 assign  r_hit_data 	= (hit) ? sram_cache_data : 256'b0;
   
 // read data :  256-bit to 32-bit
 always@(p1_offset or r_hit_data) begin
   //!!! add you code here! (p1_data=...?)
   if(hit) begin
-	  p1_data = r_hit_data[p1_offset<<3 - 1];
+	  p1_data = r_hit_data[p1_offset];
   end else begin
 	  p1_data = mem_data_i;
   end
@@ -108,13 +107,15 @@ end
 // write data :  32-bit to 256-bit
 always@(p1_offset or r_hit_data or p1_data_i) begin
   //!!! add you code here! (w_hit_data=...?)
-  if(hit) begin
+  if(write_hit) begin
 	  w_hit_data = r_hit_data;
-    w_hit_data[p1_offset<<3 - 1] = p1_data_i;
+    //w_hit_data[p1_offset] = p1_data_i;
   end else begin
 	  w_hit_data = mem_data_i;
   end
-   // w_hit_data[p1_offset<<3 - 1] = p1_data_i;
+  if (p1_MemWrite_i) begin
+    w_hit_data[p1_offset] = p1_data_i;
+  end
 end
 
 
@@ -141,7 +142,7 @@ always@(posedge clk_i or negedge rst_i) begin
         if(sram_dirty) begin    //write back if dirty
                   //!!! add you code here! 
   	      mem_enable = 1'b1;
-          write_back   = 1'b1;
+          write_back = 1'b1;
           mem_write  = 1'b1;
           state <= STATE_WRITEBACK;
         end
