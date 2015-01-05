@@ -24,9 +24,9 @@ CPU CPU(
     .clk_i  (Clk),
     .rst_i  (Reset),
     .start_i(Start),
-    
+
     .mem_data_i(mem_cpu_data), 
-    .mem_ack_i(mem_cpu_ack),    
+    .mem_ack_i(mem_cpu_ack),
     .mem_data_o(cpu_mem_data), 
     .mem_addr_o(cpu_mem_addr),  
     .mem_enable_o(cpu_mem_enable), 
@@ -75,27 +75,25 @@ initial begin
     
     // Load instructions into instruction memory
     $readmemb("instruction.txt", CPU.Instruction_Memory.memory);
-    
+
     // Open output file
     outfile = $fopen("output.txt") | 1;
     outfile2 = $fopen("cache.txt") | 1;
-    
-    
+
     // Set Input n into data memory at 0x00
     Data_Memory.memory[0] = 256'h5;     // n = 5 for example
-    
+
     Clk = 0;
     Reset = 0;
     Start = 0;
-    
+
     #(`CYCLE_TIME/4) 
     Reset = 1;
     Start = 1;
 
-    
 end
-  
-always@(negedge Clk) begin
+
+always@(posedge Clk) begin
     if(counter == 150) begin    // store cache to memory
         $fdisplay(outfile, "Flush Cache! \n");
         for(i=0; i<32; i=i+1) begin

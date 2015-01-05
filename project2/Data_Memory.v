@@ -20,7 +20,7 @@ wire  [26:0]    addr;
 
 parameter STATE_IDLE      = 3'h0,
           STATE_WAIT      = 3'h1,
-          STATE_ACK       = 3'h2,         
+          STATE_ACK       = 3'h2,
           STATE_FINISH    = 3'h3;
 
 reg   [1:0]   state;
@@ -29,8 +29,8 @@ assign  ack_o = ack;
 assign  addr = addr_i>>5;
 assign  data_o = data;
 
-//Controller 
-always@(negedge clk_i or negedge rst_i) begin
+//Controller
+always@(posedge clk_i or negedge rst_i) begin
   if(~rst_i) begin
     count <= 4'b0;
     ok <= 1'b0;
@@ -38,7 +38,7 @@ always@(negedge clk_i or negedge rst_i) begin
     state <= STATE_IDLE;
   end
     else begin
-    case(state) 
+    case(state)
       STATE_IDLE: begin
         if(enable_i) begin
           count <= count + 1;
@@ -49,7 +49,7 @@ always@(negedge clk_i or negedge rst_i) begin
         end
       end
       STATE_WAIT: begin
-        if(count == 4'd6) begin 
+        if(count == 4'd6) begin
           ok <= 1'b1;
           state <= STATE_ACK;
         end
@@ -72,15 +72,15 @@ always@(negedge clk_i or negedge rst_i) begin
   end
 end
 
-// Read Data       
-always@(negedge clk_i) begin
+// Read Data
+always@(posedge clk_i) begin
     if(ok && !write_i) begin
     data = memory[addr];
   end
 end
 
-// Write Data      
-always@(negedge clk_i) begin
+// Write Data
+always@(posedge clk_i) begin
     if(ok && write_i) begin
     memory[addr] <= data_i;
   end
