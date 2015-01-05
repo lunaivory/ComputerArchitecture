@@ -100,7 +100,7 @@ always@(p1_offset or r_hit_data) begin
   if(hit) begin
 	  p1_data = r_hit_data[((p1_offset+4)<<3) - 1 -: 32];
   end else begin
-	  p1_data = mem_data_i;
+	  p1_data = mem_data_i[((p1_offset+4)<<3) - 1 -: 32];
   end
 end
 
