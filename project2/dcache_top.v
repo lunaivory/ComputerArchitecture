@@ -133,7 +133,7 @@ always@(negedge clk_i or negedge rst_i) begin
           state <= STATE_MISS;
         end
         else begin
-          state <= STATE_MISS;
+          state <= STATE_IDLE;
         end
       end
       STATE_MISS: begin
